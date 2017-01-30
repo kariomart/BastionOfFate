@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ba7b1b864b71b43e69ba00cd5c220afe
+timeCreated: 1481725083
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - Card: {fileID: 114000014227640516, guid: e443bc8da2eee4b1b8ac783f411c4758, type: 2}
+  - Canvas: {instanceID: 0}
+  - DeckDisplay: {instanceID: 0}
+  - HandDisplay: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
