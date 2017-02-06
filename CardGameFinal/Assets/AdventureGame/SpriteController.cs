@@ -5,6 +5,12 @@ using UnityEngine;
 public class SpriteController : MonoBehaviour {
 
 	public Rigidbody2D rigid;
+	public Vector2 location;
+	public Vector2 speed;
+	int horizontal;
+	int vertical;
+
+
 
 
 	// Use this for initialization
@@ -16,21 +22,49 @@ public class SpriteController : MonoBehaviour {
 
 	void FixedUpdate() {
 		
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			Debug.Log("right");
-			rigid.MovePosition (transform.position + transform.forward);
-		}
+		Debug.Log (speed);
+		speed = new Vector2 (horizontal, vertical);
+		speed.Normalize();
+		rigid.MovePosition (rigid.position + speed * 5 * Time.deltaTime);
 
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			Debug.Log ("left");
-			rigid.MovePosition (transform.position - transform.forward);
-		}
 	}
+
+
 
 
 
 	// Update is called once per frame
 	void Update () {
-		
+
+		if (Input.GetKey (KeyCode.D)) {
+			Debug.Log ("right");
+			horizontal = 1;
+		}
+			
+		if (Input.GetKey (KeyCode.A)) {
+			Debug.Log ("left");
+			horizontal = -1;
+		}
+
+		if (((!Input.GetKey (KeyCode.D))) && (!Input.GetKey (KeyCode.A))) {
+			horizontal = 0;
+		}
+
+
+		if (Input.GetKey (KeyCode.W)) {
+			Debug.Log ("right");
+			vertical = 1;
+		}
+
+		if (Input.GetKey (KeyCode.S)) {
+			Debug.Log ("left");
+			vertical = -1;
+		}
+
+		if (((!Input.GetKey (KeyCode.W))) && (!Input.GetKey (KeyCode.S))) {
+			vertical = 0;
+		}
 	}
+
+
 }
