@@ -22,10 +22,13 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	public RectTransform CardDisplay;
 	public Text Title;
 	public Text Description;
+	public GameObject hand;
 
 
 	// Use this for initialization
 	void Start () {
+		hand = Global.me.HandDisplay;
+
 		rand = Random.Range(0, 4);
 		Names.Add ("a");
 		Names.Add ("b");
@@ -44,6 +47,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 		getCharacterStats ();
 		setCardDisplay ();
+		transform.SetParent (hand.transform, false);
 
 
 	}

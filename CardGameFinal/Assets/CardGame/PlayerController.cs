@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour {
 	//public List<CardController> Deck;
 	public List<CardController> Hand;
 	public Canvas Canvas;
-	public GameObject HandDisplay;
 	public int DeckSize = 30;
 	public int HandSize = 0;
 
@@ -34,30 +33,31 @@ public class PlayerController : MonoBehaviour {
 			HandSize ++;
 			Card.CardNumber ++;
 			DeckSize --;
-			TiltCards ();
+			// TiltCards ();
 		}
 	}
 
 
-	void TiltCards()
-	{
-		//Loop through each card in the hand...
-		foreach (CardController c in Hand) {
-			float handIndex = Hand.IndexOf (c);//This tells us where in the hand the card is.
-			float totalCards = Hand.Count; //The total number of cards in the hand--needed to know relative position.
-			Vector3 rot = Vector3.zero; //Make a rotation to adjust...
-			//Use Mathf.Lerp to make it the appropriate number between 25 and -25.
-			rot.z = Mathf.Lerp (25f, -25f, handIndex / totalCards);
-			c.transform.rotation = Quaternion.Euler (rot); //And apply it.
-		}
-	}
+//	void TiltCards()
+//	{
+//		//Loop through each card in the hand...
+//		foreach (CardController c in Hand) {
+//			float handIndex = Hand.IndexOf (c);//This tells us where in the hand the card is.
+//			float totalCards = Hand.Count; //The total number of cards in the hand--needed to know relative position.
+//			Vector3 rot = Vector3.zero; //Make a rotation to adjust...
+//			//Use Mathf.Lerp to make it the appropriate number between 25 and -25.
+//			rot.z = Mathf.Lerp (25f, -25f, handIndex / totalCards);
+//			c.transform.rotation = Quaternion.Euler (rot); //And apply it.
+//		}
+//	}
 
 
 	public void GenerateCard() {
-		Object card = Instantiate (Card.gameObject, new Vector3 (-400 + (110 * Hand.Count), -200, 0), Quaternion.identity);
+		//Object card = Instantiate (Card.gameObject, new Vector3 (0 + (110 * Hand.Count), -200, 0), Quaternion.identity);
+		Object card = Instantiate (Card.gameObject, new Vector3 (245 + (11 * Hand.Count) , -200, 0), Quaternion.identity);
 		CardController c = ((GameObject)card).GetComponent<CardController> ();
 		Hand.Add (c);
-		c.transform.SetParent (HandDisplay.transform, false);
+		// c.transform.SetParent (Global.HandDisplay);
 		// c.Rotate();
 	}
 

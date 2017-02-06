@@ -8,7 +8,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public PanelController battlefieldPanel;
 	public PlayerController Player;
 	public CardController Card;
-
+	public GameObject HandDisplay;
 
 
 
@@ -24,6 +24,8 @@ public class Global : MonoBehaviourSingleton <Global> {
 	void Awake() {
 		Get ();
 	}
+
+
 
 
 

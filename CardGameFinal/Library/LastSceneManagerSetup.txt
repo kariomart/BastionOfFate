@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/AdventureGame/AdventureGame.unity
+- path: Assets/CardGame/CardBattle.unity
   isLoaded: 1
   isActive: 1

@@ -25,7 +25,7 @@ public class SpriteController : MonoBehaviour {
 		Debug.Log (speed);
 		speed = new Vector2 (horizontal, vertical);
 		speed.Normalize();
-		rigid.MovePosition (rigid.position + speed * 5 * Time.deltaTime);
+		rigid.MovePosition (rigid.position + speed * 8 * Time.deltaTime);
 
 	}
 
