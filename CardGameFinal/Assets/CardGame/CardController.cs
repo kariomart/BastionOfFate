@@ -24,10 +24,14 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	public Text Description;
 	public GameObject hand;
 
+	Vector2 originalPos;
+	public bool inPlay;
 
 	// Use this for initialization
 	void Start () {
+		
 		hand = Global.me.HandDisplay;
+		originalPos = transform.position;
 
 		rand = Random.Range(0, 4);
 		Names.Add ("a");
@@ -66,7 +70,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 
 	public void OnPointerEnter(PointerEventData eventData) {
-		if (CardDisplay.transform.position.y < 300) {
+		if (CardDisplay.transform.position.y < originalPos.y + 100) {
 			CardDisplay.Translate (0, 20, 0);
 		}
 	}
@@ -75,7 +79,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 
 	public void OnPointerExit(PointerEventData eventData) {
-		if (CardDisplay.transform.position.y > 250) {
+		if (CardDisplay.transform.position.y > originalPos.y) {
 			CardDisplay.Translate (0, -20, 0);
 		}
 	}

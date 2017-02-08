@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SpriteController : MonoBehaviour {
 
 	public Rigidbody2D rigid;
+	public BoxCollider2D collider;
+	public ParticleSystem particles;
 	public Vector2 location;
 	public Vector2 speed;
 	int horizontal;
@@ -16,6 +19,8 @@ public class SpriteController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rigid = GetComponent<Rigidbody2D> ();
+		collider = GetComponent<BoxCollider2D> ();
+		particles = GetComponent<ParticleSystem> ();
 	}
 
 
@@ -28,9 +33,7 @@ public class SpriteController : MonoBehaviour {
 		rigid.MovePosition (rigid.position + speed * 8 * Time.deltaTime);
 
 	}
-
-
-
+		
 
 
 	// Update is called once per frame
@@ -64,7 +67,19 @@ public class SpriteController : MonoBehaviour {
 		if (((!Input.GetKey (KeyCode.W))) && (!Input.GetKey (KeyCode.S))) {
 			vertical = 0;
 		}
-	}
 
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			collider.isTrigger = true;
+			particles.Play ();
+
+		}
+
+		if (Input.GetKeyUp (KeyCode.Space)) {
+			collider.isTrigger = false;
+			particles.Stop ();
+		}
+
+			
+	}
 
 }

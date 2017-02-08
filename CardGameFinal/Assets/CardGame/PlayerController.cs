@@ -10,11 +10,12 @@ public class PlayerController : MonoBehaviour {
 	//public List<CardController> Deck;
 	public List<CardController> Hand;
 	public Canvas Canvas;
-	public int DeckSize = 30;
-	public int HandSize = 0;
+	public int deckSize = 30;
+	public int handSize = 0;
 
 	// Use this for initialization
 	void Start () {
+		
 	}
 
 //	void CreateDeck () {
@@ -30,9 +31,9 @@ public class PlayerController : MonoBehaviour {
 	public void Draw (int amount) {
 		for(int x=0; x < amount; x++) {
 			GenerateCard ();
-			HandSize ++;
+			handSize ++;
 			Card.CardNumber ++;
-			DeckSize --;
+			deckSize --;
 			// TiltCards ();
 		}
 	}
@@ -53,31 +54,25 @@ public class PlayerController : MonoBehaviour {
 
 
 	public void GenerateCard() {
-		//Object card = Instantiate (Card.gameObject, new Vector3 (0 + (110 * Hand.Count), -200, 0), Quaternion.identity);
-		Object card = Instantiate (Card.gameObject, new Vector3 (245 + (11 * Hand.Count) , -200, 0), Quaternion.identity);
+		Object card = Instantiate (Card.gameObject, new Vector3 (100 + (50 * handSize), 0, 0), Quaternion.identity);
 		CardController c = ((GameObject)card).GetComponent<CardController> ();
 		Hand.Add (c);
 		// c.transform.SetParent (Global.HandDisplay);
 		// c.Rotate();
 	}
 
+
 	public void PrintHand() {
 		foreach (CardController Card in Hand) {
 			Debug.Log (Card);
 		}
 	}
-
-
-
-
-			
-
-
+		
 
 
 
 	// Update is called once per frame
 	void Update () {
-	//	Debug.Log (HandSize);
+	//	Debug.Log (handSize);
 	}
 }

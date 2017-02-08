@@ -9,6 +9,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public PlayerController Player;
 	public CardController Card;
 	public GameObject HandDisplay;
+	// public List<Items> Inventory;
 
 
 
@@ -19,11 +20,13 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 		return me;
 	}
+		
 
 
 	void Awake() {
 		Get ();
 	}
+
 
 
 
