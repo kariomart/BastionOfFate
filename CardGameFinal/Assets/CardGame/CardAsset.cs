@@ -33,9 +33,9 @@ public class Card {
 
 	public Card(CardAsset c)
 	{
-		health = c.heath;
-		tokens = c.tokens;
-		name = c.name;
+		int health = c.health;
+		int tokens = c.tokens;
+		string name = c.name;
 		cardBase = c.cardBase;
 	}
 

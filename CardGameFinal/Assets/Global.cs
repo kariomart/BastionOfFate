@@ -5,10 +5,11 @@ using UnityEngine;
 public class Global : MonoBehaviourSingleton <Global> {
 
 	public static Global me;
-	public PanelController battlefieldPanel;
-	public PlayerController Player;
-	public CardController Card;
-	public GameObject HandDisplay;
+//	public PanelController battlefieldPanel;
+//	public PlayerController Player;
+//	public CardController Card;
+//	public GameObject HandDisplay;
+	public List<CardAsset> inventory;
 	// public List<Items> Inventory;
 
 
@@ -38,7 +39,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 	}
 
 	void SetupGame() {
-		Player.Draw(5);
+		// Player.Draw(5);
 	}
 
 

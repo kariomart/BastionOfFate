@@ -30,7 +30,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	// Use this for initialization
 	void Start () {
 		
-		hand = Global.me.HandDisplay;
+		// hand = Global.me.HandDisplay;
 		originalPos = transform.position;
 
 		rand = Random.Range(0, 4);

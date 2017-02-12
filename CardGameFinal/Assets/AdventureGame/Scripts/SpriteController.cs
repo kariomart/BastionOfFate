@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class SpriteController : MonoBehaviour {
 
@@ -12,8 +11,7 @@ public class SpriteController : MonoBehaviour {
 	public Vector2 speed;
 	int horizontal;
 	int vertical;
-
-
+	List<CardAsset> inventory;
 
 
 	// Use this for initialization
@@ -21,13 +19,14 @@ public class SpriteController : MonoBehaviour {
 		rigid = GetComponent<Rigidbody2D> ();
 		collider = GetComponent<BoxCollider2D> ();
 		particles = GetComponent<ParticleSystem> ();
+		inventory = Global.me.inventory;
 	}
 
 
 
 	void FixedUpdate() {
 		
-		Debug.Log (speed);
+//		Debug.Log (speed);
 		speed = new Vector2 (horizontal, vertical);
 		speed.Normalize();
 		rigid.MovePosition (rigid.position + speed * 8 * Time.deltaTime);
@@ -40,12 +39,12 @@ public class SpriteController : MonoBehaviour {
 	void Update () {
 
 		if (Input.GetKey (KeyCode.D)) {
-			Debug.Log ("right");
+		//	Debug.Log ("right");
 			horizontal = 1;
 		}
 			
 		if (Input.GetKey (KeyCode.A)) {
-			Debug.Log ("left");
+		//	Debug.Log ("left");
 			horizontal = -1;
 		}
 
@@ -55,12 +54,12 @@ public class SpriteController : MonoBehaviour {
 
 
 		if (Input.GetKey (KeyCode.W)) {
-			Debug.Log ("right");
+		//	Debug.Log ("right");
 			vertical = 1;
 		}
 
 		if (Input.GetKey (KeyCode.S)) {
-			Debug.Log ("left");
+		//	Debug.Log ("left");
 			vertical = -1;
 		}
 

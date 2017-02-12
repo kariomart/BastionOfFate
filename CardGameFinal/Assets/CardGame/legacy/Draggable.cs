@@ -13,7 +13,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
 
 	public void Start() {
-		panel = Global.me.battlefieldPanel;
+		// panel = Global.me.battlefieldPanel;
 	}
 
 	public void OnBeginDrag(PointerEventData eventData) {
