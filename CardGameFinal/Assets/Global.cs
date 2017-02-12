@@ -26,8 +26,10 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	void Awake() {
 		Get ();
-	}
+		DontDestroyOnLoad(transform.gameObject);
 
+	}
+		
 
 
 
@@ -35,14 +37,9 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	// Use this for initialization
 	void Start () {
-		SetupGame ();
+		
 	}
-
-	void SetupGame() {
-		// Player.Draw(5);
-	}
-
-
+		
 
 	
 	// Update is called once per frame
