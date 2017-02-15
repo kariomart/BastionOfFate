@@ -38,6 +38,7 @@ public class SpriteController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 0, 0);
 		if (Input.GetKey (KeyCode.D)) {
 		//	Debug.Log ("right");
 			horizontal = 1;

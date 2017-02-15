@@ -8,12 +8,20 @@ public class ChestController : MonoBehaviour {
 	public Sprite open;
 	public Sprite closed;
 	public CardAsset loot;
+	public bool chestOpen = false;
+	public GameObject notification;
 	List<CardAsset> inventory;
 
 	// Use this for initialization
 	void Start () {
 		spriteRenderer = GetComponent<SpriteRenderer> ();
 		inventory = Global.me.inventory;
+		List<CardAsset> cards = Global.me.inventory;
+
+//		Debug.Log (cards.Count);
+//		int rand = Random.Range (0, cards.Count - 1);
+//		Debug.Log (rand);
+//		loot = cards[rand];
 	}
 	
 	// Update is called once per frame
@@ -22,7 +30,15 @@ public class ChestController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		spriteRenderer.sprite = open;
-		inventory.Add (loot);
+		if (!chestOpen) {
+			spriteRenderer.sprite = open;
+			inventory.Add (loot);
+			GameObject n = Instantiate (notification, new Vector3 (-1, 1, 3), Quaternion.identity);
+			GameObject nc = n.transform.GetChild (2).gameObject;
+			TextMesh nct = nc.GetComponent<TextMesh> ();
+			nct.text = "You've obtained " + loot.name + "!";
+			chestOpen = true;
+		}
+
 	}
 }

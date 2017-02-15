@@ -22,6 +22,12 @@ public class CardAsset : ScriptableObject {
 	void Update () {
 		
 	}
+
+	public int RollDie() {
+		int rand = Random.Range (1, 6);
+		Debug.Log (name + rand);
+		return rand;
+	}
 }
 
 public class Card {
@@ -38,5 +44,6 @@ public class Card {
 		string name = c.name;
 		cardBase = c.cardBase;
 	}
+		
 
 }

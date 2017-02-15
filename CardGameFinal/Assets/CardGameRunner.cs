@@ -7,16 +7,14 @@ public class CardGameRunner : MonoBehaviour {
 	public GameObject cardBase;
 	List<CardAsset> inventory;
 
+
 	// Use this for initialization
 	void Start () {
 		inventory = Global.me.inventory;
 		SetupGame ();
 
 	}
-
-	void Awake() {
-	}
-
+		
 
 	// Update is called once per frame
 	void Update () {
