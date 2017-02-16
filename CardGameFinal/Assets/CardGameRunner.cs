@@ -5,7 +5,7 @@ using UnityEngine;
 public class CardGameRunner : MonoBehaviour {
 
 	public GameObject cardBase;
-	List<CardAsset> inventory;
+	List<Card> inventory;
 
 
 	// Use this for initialization
@@ -25,9 +25,9 @@ public class CardGameRunner : MonoBehaviour {
 	public void SetupGame() {
 		int count = 0;
 
-		foreach (CardAsset ca in inventory) {
-			Instantiate (cardBase, new Vector3(-7 + (1 * count), -3, 0), Quaternion.identity);
-			CardDisplay display = cardBase.GetComponent<CardDisplay> ();
+		foreach (Card ca in inventory) {
+			GameObject bloop = Instantiate (cardBase, new Vector3(-7 + (1 * count), -3, 0), Quaternion.identity);
+			CardDisplay display = bloop.GetComponent<CardDisplay> ();
 			display.card = ca;
 			display.ChangeName();
 			count += 1;

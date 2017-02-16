@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class CardAsset : ScriptableObject {
+public class Card {
 
 
 	public int health;
 	public int tokens;
 	public string name;
 	public SpriteRenderer cardBase;
-
 
 
 	// Use this for initialization
@@ -23,13 +21,13 @@ public class CardAsset : ScriptableObject {
 		
 	}
 
-	public int RollDie() {
+	public virtual int RollDie() {
 		int rand = Random.Range (1, 6);
 		Debug.Log (name + rand);
 		return rand;
 	}
 }
-
+/*
 public class Card {
 
 	public int heath;
@@ -47,3 +45,4 @@ public class Card {
 		
 
 }
+*/

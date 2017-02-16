@@ -11,7 +11,7 @@ public class SpriteController : MonoBehaviour {
 	public Vector2 speed;
 	int horizontal;
 	int vertical;
-	List<CardAsset> inventory;
+	List<Card> inventory;
 
 
 	// Use this for initialization

@@ -9,10 +9,9 @@ public class Global : MonoBehaviourSingleton <Global> {
 //	public PlayerController Player;
 //	public CardController Card;
 //	public GameObject HandDisplay;
-	public List<CardAsset> inventory;
-	public List<CardAsset> cards;
+	public List<Card> inventory;
+	public List<Card> cards;
 	public int CardsInPlay;
-	// public List<Items> Inventory;
 
 
 
@@ -31,6 +30,13 @@ public class Global : MonoBehaviourSingleton <Global> {
 		Get ();
 		DontDestroyOnLoad(transform.gameObject);
 
+		cards = new List<Card> ();
+		inventory = new List<Card> ();
+
+		cards.Add (new Joker());
+		cards.Add (new General());
+		cards.Add (new Zombie());
+
 	}
 		
 
@@ -40,13 +46,14 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	// Use this for initialization
 	void Start () {
-		
+
 	}
 		
 
 	
 	// Update is called once per frame
 	void Update () {
-		
+		// Debug.Log (inventory.Count);
+		// Debug.Log (cards.Count);
 	}
 }

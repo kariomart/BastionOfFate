@@ -7,22 +7,27 @@ public class ChestController : MonoBehaviour {
 	SpriteRenderer spriteRenderer;
 	public Sprite open;
 	public Sprite closed;
-	public CardAsset loot;
+	public Card loot;
 	public bool chestOpen = false;
 	public GameObject notification;
-	List<CardAsset> inventory;
+	List<Card> inventory;
+	List<Card> cards;
+
 
 	// Use this for initialization
 	void Start () {
 		spriteRenderer = GetComponent<SpriteRenderer> ();
 		inventory = Global.me.inventory;
-		List<CardAsset> cards = Global.me.inventory;
+		cards = Global.me.cards;
 
 //		Debug.Log (cards.Count);
-//		int rand = Random.Range (0, cards.Count - 1);
-//		Debug.Log (rand);
-//		loot = cards[rand];
-	}
+		int rand = Random.Range (0, cards.Count - 1);
+		// Debug.Log (rand);
+		loot = cards[rand];
+		Debug.Log (loot.name);
+
+		}
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -33,6 +38,7 @@ public class ChestController : MonoBehaviour {
 		if (!chestOpen) {
 			spriteRenderer.sprite = open;
 			inventory.Add (loot);
+
 			GameObject n = Instantiate (notification, new Vector3 (-1, 1, 3), Quaternion.identity);
 			GameObject nc = n.transform.GetChild (2).gameObject;
 			TextMesh nct = nc.GetComponent<TextMesh> ();

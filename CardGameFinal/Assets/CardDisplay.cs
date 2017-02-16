@@ -8,8 +8,7 @@ public class CardDisplay : MonoBehaviour {
 	public TextMesh tokenMesh;
 	Vector2 originalPos;
 	bool inPlay = false;
-
-	public CardAsset card;																			
+	public Card card;																			
 
 	// Use this for initialization
 	void Start () {
@@ -47,6 +46,7 @@ public class CardDisplay : MonoBehaviour {
 
 	public void OnMouseDown() {
 		if (inPlay) {
+			Debug.Log (card);
 			card.RollDie ();
 		}
 			
