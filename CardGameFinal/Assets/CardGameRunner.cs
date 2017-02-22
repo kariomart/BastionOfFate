@@ -6,13 +6,21 @@ public class CardGameRunner : MonoBehaviour {
 
 	public GameObject cardBase;
 	List<Card> inventory;
+	List<Card> enemies;
 
+	public bool playerTurn = true;
+	public bool enemyTurn = false;
+	public bool inCombat = false;
+	public int dmg;
 
 	// Use this for initialization
 	void Start () {
 		inventory = Global.me.inventory;
-		SetupGame ();
+		enemies = Global.me.enemiesTransfer;
 
+		SetupGame ();
+		StartGame ();
+		PlayerTurn ();
 	}
 		
 
@@ -34,5 +42,47 @@ public class CardGameRunner : MonoBehaviour {
 	
 		}
 
+		foreach (Card ca in enemies) {
+			GameObject bloop = Instantiate (cardBase, new Vector3 (2 + (2 * count), 0, 0), Quaternion.identity);
+			CardDisplay display = bloop.GetComponent<CardDisplay> ();
+			SpriteRenderer displaySprite = bloop.GetComponent<SpriteRenderer> ();
+
+			displaySprite.color = new Color (255, 0, 0);
+			display.card = ca;
+			display.ChangeName ();
+			display.isEnemyCard = true;
+
+			count += 1;
+		}
 	}
+
+	public void Combat (Card card) {
+		inCombat = true;
+		card.hasAttacked = true;
+		dmg = card.RollDie ();
+	}
+
+
+
+
+	public void StartGame() {
+		Debug.Log ("PHASE 1: PLACE UP TO 3 CARDS ONTO THE BATTLEFIELD");
+
+	}
+
+	public void PlayerTurn() {
+		Debug.Log ("PHASE 2: YOUR TURN. CLICK ANY OF YOUR CARDS AND THEN AN ENEMY CARD TO ATTACK IT. CARDS CAN ONLY ATTACK ONCE PER TURN.");
+
+
+
+	}
+
+	public void EnemyTurn() {
+
+
+
+	}
+
+
+
 }

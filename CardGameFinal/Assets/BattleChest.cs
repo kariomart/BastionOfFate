@@ -2,11 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Battle : MonoBehaviour {
+public class BattleChest : MonoBehaviour {
+
+
+	List<Card> cards;
+	public List<Card> enemies = new List<Card>();
 
 	// Use this for initialization
 	void Start () {
-		
+		cards = Global.me.cards;
+
+		for(int i = 0; i < Random.Range(2, 4); i++){
+			int rand = Random.Range (0, cards.Count - 1);
+			enemies.Add(cards[rand]);
+		}
 	}
 	
 	// Update is called once per frame
@@ -15,6 +24,7 @@ public class Battle : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
+		Global.me.CurrentBattle (enemies);
 		UnityEngine.SceneManagement.SceneManager.LoadScene ("CardGame");
 	}
 }

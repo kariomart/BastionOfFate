@@ -10,6 +10,8 @@ public class Card {
 	public string name;
 	public SpriteRenderer cardBase;
 
+	public bool hasAttacked = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -22,10 +24,19 @@ public class Card {
 	}
 
 	public virtual int RollDie() {
-		int rand = Random.Range (1, 6);
-		Debug.Log (name + rand);
+		int rand = Random.Range (1, 7);
+		// Debug.Log (name + " has rolled a " + rand);
 		return rand;
 	}
+		
+
+	public virtual void TakeDamage(int dmg) {
+		health -= dmg;
+	}
+		
+
+
+
 }
 /*
 public class Card {

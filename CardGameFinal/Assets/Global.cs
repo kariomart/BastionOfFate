@@ -11,6 +11,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 //	public GameObject HandDisplay;
 	public List<Card> inventory;
 	public List<Card> cards;
+	public List<Card> enemiesTransfer = new List<Card>();
 	public int CardsInPlay;
 
 
@@ -24,7 +25,10 @@ public class Global : MonoBehaviourSingleton <Global> {
 	}
 		
 
+	public void CurrentBattle(List<Card> enemiesInvolved) {
+		enemiesTransfer = enemiesInvolved;
 
+	}
 
 	void Awake() {
 		Get ();

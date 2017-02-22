@@ -10,7 +10,7 @@ public class Zombie : Card {
 		health = 2; 
 	}
 
-	 public int RollDie () {
+	public override int RollDie () {
 		int rand = Random.Range (1, 6);
 
 		if (rand == 6) {

@@ -20,11 +20,10 @@ public class ChestController : MonoBehaviour {
 		inventory = Global.me.inventory;
 		cards = Global.me.cards;
 
-//		Debug.Log (cards.Count);
+
 		int rand = Random.Range (0, cards.Count - 1);
-		// Debug.Log (rand);
 		loot = cards[rand];
-		Debug.Log (loot.name);
+//		Debug.Log (loot.name);
 
 		}
 

@@ -10,7 +10,7 @@ public class Joker : Card {
 		health = 1;
 	}
 
-	public int RollDie () {
+	public override int RollDie () {
 		return 5;
 	}
 }
