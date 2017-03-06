@@ -22,7 +22,7 @@ public class ChestController : MonoBehaviour {
 
 
 		int rand = Random.Range (0, cards.Count - 1);
-		loot = cards[rand];
+		loot = new Card(cards[rand]);
 //		Debug.Log (loot.name);
 
 		}

@@ -9,13 +9,15 @@ public class CardDisplay : MonoBehaviour {
 	public TextMesh healthMesh;
 	public CardGameRunner game;
 
+	public SpriteRenderer sprite;
 	Vector2 originalPos;
-	bool inPlay = false;
-	public Card card;																			
-	public bool isEnemyCard = false;
+	public Card card;			
+
 
 	// Use this for initialization
 	void Start () {
+
+		sprite = GetComponent<SpriteRenderer> ();
 
 		originalPos = new Vector2 (transform.position.x, transform.position.y); 
 		GameObject n = transform.GetChild (0).gameObject;
@@ -47,16 +49,20 @@ public class CardDisplay : MonoBehaviour {
 	}
 
 	public void OnMouseOver() {
-		if (!isEnemyCard) {
-			if ((transform.position.y < originalPos.y + 1) && (!inPlay)) {
+
+		// Debug.Log (card.name + " is being hovered, " + "is card in play? " + card.inPlay + " " + "is card enemy card?" + card.isEnemyCard);
+		if (!card.inPlay && !card.isEnemyCard) {
+			if ((transform.position.y < originalPos.y + 1) && (!card.inPlay)) {
 				transform.Translate (0, 1, 0);
 			}
 		}
 	}
 
+
 	public void OnMouseExit() {
-		if (!isEnemyCard) {
-			if ((transform.position.y > originalPos.y) && (!inPlay)) {
+	
+		if (!card.inPlay && !card.isEnemyCard) {
+			if ((transform.position.y > originalPos.y) && (!card.inPlay)) {
 				transform.Translate (0, -1, 0);
 			}
 		}
@@ -65,41 +71,25 @@ public class CardDisplay : MonoBehaviour {
 
 
 	public void OnMouseDown() {
-			
+		game.CardClicked (card);
 
-		if (inPlay && card.hasAttacked && !isEnemyCard) {
-			Debug.Log ("This card has already attacked this turn!");
+		if (card.inPlay == false && !card.isEnemyCard) {
+		card.inPlay = true;
+// 		Debug.Log (game.cardsInPlay);
+		transform.position = new Vector3 (-9 + (2 * game.cardsInPlay), 2, 0);
+		Debug.Log (card.name + " inPlay? " + card.inPlay + " isEnemyCard? " + card.isEnemyCard);
+		// sprite.sortingOrder = game.cardsInPlay;
 		}
 
-
-		if (inPlay && !card.hasAttacked && !isEnemyCard) {
-				Debug.Log ("You have selected " + card.name);
-				game.Combat (card);
-			}
-			
-
-		if (isEnemyCard && game.inCombat) {
-			Debug.Log (card.name + " has taken " + game.dmg + " damage");
-			card.TakeDamage (game.dmg);
-			UpdateDisplay ();
-			game.inCombat = false;
-		}
-
-		if (!inPlay && !isEnemyCard) {
-			Global.me.CardsInPlay++;
-			transform.position = new Vector3 (-7 + (2 * Global.me.CardsInPlay), 2, 0);
-			card.hasAttacked = false;
-			inPlay = true;
-		}
-			
 	}
+		
 
 
 		
 	
 	// Update is called once per frame
 	void Update () {
-		// UpdateDisplay ();
+		UpdateDisplay ();
 
 		if (card.health < 1) {
 			Destroy (this);

@@ -11,6 +11,7 @@ public class CardGameRunner : MonoBehaviour {
 	public bool playerTurn = true;
 	public bool enemyTurn = false;
 	public bool inCombat = false;
+	public int cardsInPlay = 0;
 	public int dmg;
 
 	// Use this for initialization
@@ -34,7 +35,7 @@ public class CardGameRunner : MonoBehaviour {
 		int count = 0;
 
 		foreach (Card ca in inventory) {
-			GameObject bloop = Instantiate (cardBase, new Vector3(-7 + (1 * count), -3, 0), Quaternion.identity);
+			GameObject bloop = Instantiate (cardBase, new Vector3(-7 + (2 * count), -3, 0), Quaternion.identity);
 			CardDisplay display = bloop.GetComponent<CardDisplay> ();
 			display.card = ca;
 			display.ChangeName();
@@ -42,27 +43,57 @@ public class CardGameRunner : MonoBehaviour {
 	
 		}
 
-		foreach (Card ca in enemies) {
-			GameObject bloop = Instantiate (cardBase, new Vector3 (2 + (2 * count), 0, 0), Quaternion.identity);
-			CardDisplay display = bloop.GetComponent<CardDisplay> ();
-			SpriteRenderer displaySprite = bloop.GetComponent<SpriteRenderer> ();
+
+		foreach (Card car in enemies) {
+			GameObject blooop = Instantiate (cardBase, new Vector3 (2 + (2 * count), 0, 0), Quaternion.identity);
+			CardDisplay display = blooop.GetComponent<CardDisplay> ();
+			SpriteRenderer displaySprite = blooop.GetComponent<SpriteRenderer> ();
 
 			displaySprite.color = new Color (255, 0, 0);
-			display.card = ca;
+			display.card = car;
 			display.ChangeName ();
-			display.isEnemyCard = true;
+			display.card.isEnemyCard = true;
 
 			count += 1;
 		}
+
 	}
+		
 
-	public void Combat (Card card) {
-		inCombat = true;
-		card.hasAttacked = true;
-		dmg = card.RollDie ();
+
+	public void CardClicked(Card card) {
+
+		if (!card.inPlay && !card.isEnemyCard) {
+			cardsInPlay++;
+			Debug.Log ("i'm incrementing stuff");
+			card.hasAttacked = false;
+		}
+			
+		if (card.inPlay && !card.hasAttacked && !card.isEnemyCard) {
+			Debug.Log ("You have selected " + card.name + " card inplay? " + card.inPlay);
+		}
+
+		/*
+
+		if (card.inPlay && card.hasAttacked && !card.isEnemyCard) {
+			Debug.Log ("This card has already attacked this turn!");
+		}
+
+
+		if (card.isEnemyCard && inCombat) {
+			Debug.Log (card.name + " has taken " + dmg + " damage");
+			card.TakeDamage (dmg);
+		//	UpdateDisplay ();
+			inCombat = false;
+		}
+
+*/
+			
+		// Debug.Log (card.name + " " + card.inPlay + " " + card.isEnemyCard);
+
+
+
 	}
-
-
 
 
 	public void StartGame() {

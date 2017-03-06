@@ -10,8 +10,22 @@ public class Card {
 	public string name;
 	public SpriteRenderer cardBase;
 
+	// public string state = "inHand";
+	public bool inPlay = false;
 	public bool hasAttacked = false;
+	public bool isEnemyCard = false;
 
+	public Card() {
+	}
+
+	public Card(Card crd) {
+		health = crd.health;
+		tokens = crd.tokens;
+		name = crd.name;
+		inPlay = crd.inPlay;
+		hasAttacked = crd.hasAttacked;
+		isEnemyCard = crd.isEnemyCard;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -20,7 +34,6 @@ public class Card {
 	
 	// Update is called once per frame
 	void Update () {
-		
 	}
 
 	public virtual int RollDie() {
