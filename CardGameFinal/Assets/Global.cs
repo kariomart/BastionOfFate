@@ -34,6 +34,35 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	}
 
+	public Card GetRandomCard() {
+		int i = Random.Range (0, cards.Count);
+
+		if (i == 0) 
+			return new Joker ();
+		else if(i == 1) 
+			return new General ();
+		else if(i == 2) 
+			return new Zombie ();
+		else if(i == 3) 
+			return new Gambler ();
+		else if(i == 4) 
+			return new Armadillo ();
+		else if(i == 5) 
+			return new Sniper ();
+		else if(i == 6) 
+			return new Martyr ();
+
+
+
+
+		 else
+			return new Card ();
+
+
+
+
+	}
+
 	void Awake() {
 		Get ();
 		DontDestroyOnLoad(transform.gameObject);

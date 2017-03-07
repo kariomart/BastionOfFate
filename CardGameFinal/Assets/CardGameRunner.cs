@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class CardGameRunner : MonoBehaviour {
 
@@ -45,7 +47,7 @@ public class CardGameRunner : MonoBehaviour {
 		}
 
 		if (Input.GetKey (KeyCode.R)) {
-			// UnityEngine.SceneManagement.SceneManager.SetActiveScene ("basic_level");
+			UnityEngine.SceneManagement.SceneManager.LoadScene("basic_level");
 
 		}
 

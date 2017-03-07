@@ -14,7 +14,7 @@ public class ChestController : MonoBehaviour {
 	List<Card> inventory;
 	List<Card> cards;
 	List<string> abilityStrings;
-
+	GameObject n;
 
 
 	// Use this for initialization
@@ -26,7 +26,7 @@ public class ChestController : MonoBehaviour {
 
 
 		int rand = Random.Range (0, cards.Count - 1);
-		loot = new Card(cards[rand]);
+		loot = Global.me.GetRandomCard ();
 //		Debug.Log (loot.name);
 
 		}
@@ -37,22 +37,25 @@ public class ChestController : MonoBehaviour {
 		if (chestOpen && !abilityChosen) {
 			
 			if ((Input.GetKeyDown (KeyCode.Alpha1))) {
-				Debug.Log ("chosen1");
+				Debug.Log ("ability 1 is chosen");
 				loot.a1_winsTies = true;
 				abilityChosen = true;
+				Destroy (n);
 
 			}
 
 			if ((Input.GetKeyDown (KeyCode.Alpha2))) {
-				Debug.Log ("chosen2");
+				Debug.Log ("ability 2 is chosen");
 				loot.a2_reduceRoll = true;
 				abilityChosen = true;
+				Destroy (n);
 			}
 
 			if ((Input.GetKeyDown (KeyCode.Alpha3))) {
-				Debug.Log ("chosen3");
+				Debug.Log ("ability 3 is chosen");
 				loot.a3_heal = true;
 				abilityChosen = true;
+				Destroy (n);
 			}
 		
 		}
@@ -63,7 +66,7 @@ public class ChestController : MonoBehaviour {
 			spriteRenderer.sprite = open;
 			inventory.Add (loot);
 
-			GameObject n = Instantiate (notification, new Vector3 (-1, 1, 3), Quaternion.identity);
+			n = Instantiate (notification, new Vector3 (-1, 1, 3), Quaternion.identity);
 			GameObject nc = n.transform.GetChild (2).gameObject;
 			TextMesh nct = nc.GetComponent<TextMesh> ();
 			string a1 = abilityStrings [0];
