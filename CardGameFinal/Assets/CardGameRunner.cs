@@ -10,9 +10,13 @@ public class CardGameRunner : MonoBehaviour {
 
 	public bool playerTurn = true;
 	public bool enemyTurn = false;
-	public bool inCombat = false;
+	public int enemiesDead = 0;
+	public bool cardCurrentlySelected = false;
+	public Card cardSelected;
 	public int cardsInPlay = 0;
+	public int cardsThatHaveAttacked = 0;
 	public int dmg;
+
 
 	// Use this for initialization
 	void Start () {
@@ -27,9 +31,17 @@ public class CardGameRunner : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
-	}
 
+//		if(enemiesDead == enemies.Count){
+//			UnityEngine.SceneManagement.SceneManager.LoadScene ("basic_level");
+//		}
+//
+//		if ((Input.GetKey (KeyCode.A))
+//			Debug.Log("ability used");
+//
+//		}
+//
+	}
 
 	public void SetupGame() {
 		int count = 0;
@@ -45,7 +57,7 @@ public class CardGameRunner : MonoBehaviour {
 
 
 		foreach (Card car in enemies) {
-			GameObject blooop = Instantiate (cardBase, new Vector3 (2 + (2 * count), 0, 0), Quaternion.identity);
+			GameObject blooop = Instantiate (cardBase, new Vector3 (0 + (2 * count), 0, 0), Quaternion.identity);
 			CardDisplay display = blooop.GetComponent<CardDisplay> ();
 			SpriteRenderer displaySprite = blooop.GetComponent<SpriteRenderer> ();
 
@@ -57,21 +69,61 @@ public class CardGameRunner : MonoBehaviour {
 			count += 1;
 		}
 
-	}
-		
+	}	
 
+	public void Combat(Card enemy) {
+
+		int playerRoll = cardSelected.RollDie ();
+		int enemyRoll = enemy.RollDie ();
+		Debug.Log(cardSelected.name + " has rolled " + playerRoll + ". " + enemy.name + " has rolled " + enemyRoll);
+
+		if (playerRoll > enemyRoll) {
+			enemy.TakeDamage (cardSelected.damage);
+			Debug.Log (cardSelected.name + "has dealt " + cardSelected.damage + " to the " + enemy.name);
+		}
+		
+		if (enemyRoll > playerRoll) {
+			cardSelected.TakeDamage (enemy.damage);
+			Debug.Log (enemy.name + "has dealt " + enemy.damage + " to the " + cardSelected.name);
+		}
+
+		if (enemyRoll == playerRoll)
+			Debug.Log("No damage has been dealt!");
+
+		}
+					
 
 	public void CardClicked(Card card) {
 
 		if (!card.inPlay && !card.isEnemyCard) {
 			cardsInPlay++;
 			Debug.Log ("i'm incrementing stuff");
-			card.hasAttacked = false;
 		}
 			
 		if (card.inPlay && !card.hasAttacked && !card.isEnemyCard) {
-			Debug.Log ("You have selected " + card.name + " card inplay? " + card.inPlay);
+			Debug.Log ("You have selected " + card.name);
+			cardCurrentlySelected = true;
+			cardSelected = card; 
 		}
+			
+
+		if (card.isEnemyCard && cardCurrentlySelected) {
+
+
+			if (!cardSelected.hasAttacked) {
+				Combat (card);
+				cardSelected.hasAttacked = true;
+				cardsThatHaveAttacked++;
+
+
+			} else
+				Debug.Log ("this card has already attacked!");
+
+			// do damage stuff
+
+
+		}
+
 
 		/*
 

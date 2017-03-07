@@ -7,13 +7,16 @@ public class Card {
 
 	public int health;
 	public int tokens;
+	public int damage = 1;
 	public string name;
 	public SpriteRenderer cardBase;
+
 
 	// public string state = "inHand";
 	public bool inPlay = false;
 	public bool hasAttacked = false;
 	public bool isEnemyCard = false;
+	public bool selected = false;
 
 	public Card() {
 	}
@@ -25,6 +28,7 @@ public class Card {
 		inPlay = crd.inPlay;
 		hasAttacked = crd.hasAttacked;
 		isEnemyCard = crd.isEnemyCard;
+		selected = crd.selected;
 	}
 
 	// Use this for initialization

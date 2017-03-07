@@ -37,6 +37,18 @@ public class CardDisplay : MonoBehaviour {
 	public void UpdateDisplay() {
 		tokenMesh.text = ("tokens: " + (card.tokens));
 		healthMesh.text = ("health: " + (card.health));
+
+//		if (game.cardCurrentlySelected && !card.isEnemyCard) {
+//			sprite.color = new Color (0, 0, 255);
+//		}
+//
+//		if(!game.cardCurrentlySelected && !card.isEnemyCard)
+//			sprite.color = new Color (0, 255, 0);
+
+		if(card.health <= 0) {
+			sprite.color = new Color (0, 0, 0);
+			game.enemiesDead++;
+		}
 	}
 		
 
