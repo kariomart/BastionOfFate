@@ -32,16 +32,27 @@ public class CardGameRunner : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-//		if(enemiesDead == enemies.Count){
-//			UnityEngine.SceneManagement.SceneManager.LoadScene ("basic_level");
-//		}
-//
-//		if ((Input.GetKey (KeyCode.A))
-//			Debug.Log("ability used");
-//
-//		}
-//
+		if (cardsThatHaveAttacked == cardsInPlay && cardsInPlay > 0)
+			CycleTurn ();
+
+		if(enemiesDead == enemies.Count){
+			UnityEngine.SceneManagement.SceneManager.LoadScene ("basic_level");
+		}
+
+		if ((Input.GetKey (KeyCode.A) && cardCurrentlySelected && !cardSelected.usedAbility)) {
+			Debug.Log (cardSelected.name + " used its ability");
+			cardSelected.usedAbility = true;
+		}
+
+		if (Input.GetKey (KeyCode.R)) {
+			// UnityEngine.SceneManagement.SceneManager.SetActiveScene ("basic_level");
+
+		}
+
+		// IF FRIENDLY DIES, SUBTRACT ONE FROM CARDSINPLAY SO IT CYCLES PROPERLY
 	}
+
+
 
 	public void SetupGame() {
 		int count = 0;
@@ -55,9 +66,9 @@ public class CardGameRunner : MonoBehaviour {
 	
 		}
 
-
+		count = 0;
 		foreach (Card car in enemies) {
-			GameObject blooop = Instantiate (cardBase, new Vector3 (0 + (2 * count), 0, 0), Quaternion.identity);
+			GameObject blooop = Instantiate (cardBase, new Vector3 (3 + (2 * count), 2, 0), Quaternion.identity);
 			CardDisplay display = blooop.GetComponent<CardDisplay> ();
 			SpriteRenderer displaySprite = blooop.GetComponent<SpriteRenderer> ();
 
@@ -71,23 +82,52 @@ public class CardGameRunner : MonoBehaviour {
 
 	}	
 
+	public void CycleTurn() {
+
+		int dmgRoll = Random.Range (0, 3);
+		Debug.Log("Your turn is over and the enemy has dealt " + dmgRoll + " to all the cards in play.");
+		foreach (Card card in inventory){
+			if (card.inPlay){
+				card.TakeDamage (dmgRoll);
+				card.hasAttacked = false;
+
+				if (card.a3_heal) {
+					card.health += Random.Range (0, 4);
+				}
+			}
+
+		}
+		cardsThatHaveAttacked = 0;
+
+
+	}
+
 	public void Combat(Card enemy) {
 
 		int playerRoll = cardSelected.RollDie ();
 		int enemyRoll = enemy.RollDie ();
+		if (cardSelected.a2_reduceRoll)
+			enemyRoll --;
+		
 		Debug.Log(cardSelected.name + " has rolled " + playerRoll + ". " + enemy.name + " has rolled " + enemyRoll);
 
 		if (playerRoll > enemyRoll) {
 			enemy.TakeDamage (cardSelected.damage);
-			Debug.Log (cardSelected.name + "has dealt " + cardSelected.damage + " to the " + enemy.name);
+			Debug.Log (cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name);
 		}
 		
 		if (enemyRoll > playerRoll) {
 			cardSelected.TakeDamage (enemy.damage);
-			Debug.Log (enemy.name + "has dealt " + enemy.damage + " to the " + cardSelected.name);
+			Debug.Log (enemy.name + " has dealt " + enemy.damage + " to the " + cardSelected.name);
 		}
 
 		if (enemyRoll == playerRoll)
+		if (cardSelected.a1_winsTies) {
+			cardSelected.WinTies ();
+			enemy.TakeDamage (cardSelected.damage);
+			Debug.Log (cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name);
+
+		} else
 			Debug.Log("No damage has been dealt!");
 
 		}
@@ -97,7 +137,6 @@ public class CardGameRunner : MonoBehaviour {
 
 		if (!card.inPlay && !card.isEnemyCard) {
 			cardsInPlay++;
-			Debug.Log ("i'm incrementing stuff");
 		}
 			
 		if (card.inPlay && !card.hasAttacked && !card.isEnemyCard) {

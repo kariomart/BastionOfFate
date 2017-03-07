@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Joker : Card {
+public class Martyr : Card {
 
-	public  Joker() {
-		name = "Joker";
-		health = 2;
-		damage = 3;
+	public  Martyr() {
+		name = "The Martyr";
+		health = 10;
+		damage = 10;
 	}
 
 	public override int RollDie ()
@@ -15,14 +15,11 @@ public class Joker : Card {
 		Debug.Log ("Overridden");
 		int roll = Random.Range (1, 7);
 
-		if (roll == 3) {
-			roll = Random.Range (1, 7);
+		if (roll == 1 || roll == 2 || roll == 3 || roll == 4 || roll == 5) {
+			roll = 1;
+			health = 0;
 		}
 
-
-		if (roll == 1) {
-			roll = 7;
-		}
 
 		return roll;
 	}

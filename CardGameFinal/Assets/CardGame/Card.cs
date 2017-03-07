@@ -17,6 +17,16 @@ public class Card {
 	public bool hasAttacked = false;
 	public bool isEnemyCard = false;
 	public bool selected = false;
+	public bool usedAbility = false; 
+
+
+	// abilities
+	public bool a1_winsTies = false;
+	public bool a2_reduceRoll = false;
+	public bool a3_heal = false;
+	public bool a4_doubleDamageBothWays = false;
+	public bool a5_killingBlow = false;
+	public bool a6_dealRollTakeRoll = false;
 
 	public Card() {
 	}
@@ -29,11 +39,15 @@ public class Card {
 		hasAttacked = crd.hasAttacked;
 		isEnemyCard = crd.isEnemyCard;
 		selected = crd.selected;
+
+		a1_winsTies = crd.a1_winsTies;
+		a2_reduceRoll = crd.a2_reduceRoll;
+		a3_heal = crd.a3_heal;
 	}
 
 	// Use this for initialization
 	void Start () {
-		
+
 	}
 	
 	// Update is called once per frame
@@ -42,6 +56,7 @@ public class Card {
 
 	public virtual int RollDie() {
 		int rand = Random.Range (1, 7);
+		Debug.Log ("generic roll");
 		// Debug.Log (name + " has rolled a " + rand);
 		return rand;
 	}
@@ -50,6 +65,23 @@ public class Card {
 	public virtual void TakeDamage(int dmg) {
 		health -= dmg;
 	}
+
+	public virtual void WinTies() {
+		Debug.Log ("Tie won ability activated");
+
+	}
+
+	public virtual void ReduceRoll() {
+		Debug.Log ("Roll reduced ability activated");
+
+	}
+		
+	public virtual void Heal() {
+		Debug.Log ("Heal Ability Activated");
+
+	}
+		
+
 		
 
 

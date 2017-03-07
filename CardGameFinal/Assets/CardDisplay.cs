@@ -85,7 +85,7 @@ public class CardDisplay : MonoBehaviour {
 	public void OnMouseDown() {
 		game.CardClicked (card);
 
-		if (card.inPlay == false && !card.isEnemyCard) {
+		if (card.inPlay == false && !card.isEnemyCard && game.cardsInPlay < 4) {
 		card.inPlay = true;
 // 		Debug.Log (game.cardsInPlay);
 		transform.position = new Vector3 (-9 + (2 * game.cardsInPlay), 2, 0);

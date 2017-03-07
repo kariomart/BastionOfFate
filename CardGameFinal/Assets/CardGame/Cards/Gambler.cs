@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Zombie : Card {
+public class Gambler : Card {
 
-	public  Zombie() {
-		name = "Zombie";
-		health = 10; 
+	public  Gambler() {
+		name = "The Gambler";
+		health = 5; 
+		damage = 2;
 	}
 
 	public override int RollDie () {
 		int roll = Random.Range (1, 7);
 
-		if (roll == 6) {
-			health = 0;
+		while (roll < 4) {
+			roll = Random.Range (1, 7);
+			health--;
 		}
 
 		return roll;
