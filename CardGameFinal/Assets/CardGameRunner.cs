@@ -15,105 +15,59 @@ public class CardGameRunner : MonoBehaviour {
 	public int enemiesDead = 0;
 	public int cardsInPlay = 0;
 	public int cardsThatHaveAttacked = 0;
-	public int friendlyDeaths = 0;
+	public int friendliesDead = 0;
 	public int dmg;
-
+	public int cardsInHand = 0;
 
 	// Use this for initialization
 	void Start () {
-		inventory = Global.me.inventory;
-		enemies = Global.me.enemiesTransfer;
 
 		SetupGame ();
 		StartGame ();
 		PlayerTurn ();
 
-		foreach (Card card in inventory) {
-			card.inPlay = false;
-		}
-			
 
 	}
 		
 
 	// Update is called once per frame
 	void Update () {
+				
+		CheckKeys ();
+		DeathTests ();
+		RemoveDeadCards ();
 
-		if (cardsThatHaveAttacked == cardsInPlay && cardsInPlay > 0)
-			CycleTurn ();
-
-		if ((Input.GetKey (KeyCode.A) && cardCurrentlySelected && !cardSelected.usedAbility)) {
-			Debug.Log (cardSelected.name + " used its ability");
-			cardSelected.usedAbility = true;
-		}
-
-		// if (Input.GetKey (KeyCode.R) || friendlyDeaths == 3 || enemiesDead == 100) {
-		if (Input.GetKey (KeyCode.R) ){
-
-			Debug.Log ("ED " + enemiesDead + " EC " + enemies.Count);
-			if (enemiesDead == enemies.Count) {
-				Card reward = Global.me.GetRandomCard();
-				inventory.Add (reward);
-			}
-
-			Debug.Log ("LATER");
-			Global.me.inventory = inventory;
-			UnityEngine.SceneManagement.SceneManager.LoadScene("basic_level");
-
-		}
-			
-		if (Input.GetKeyDown (KeyCode.E)) {
-			CycleTurn ();
-		}
-
-		foreach (Card card in inventory) {
-			if (card.health < 1) {
-				card.dead = true;
-				cardsInPlay--;
-				friendlyDeaths++;
-				Debug.Log (card.name + " has died!");
-			}
-		}
-			
-
-//		Debug.Log ("length of inventory: " + inventory.Count);
-		for (int i = 0; i < inventory.Count; i ++) {
-// 			Debug.Log (inventory [i].name + " " + inventory [i].health);
-			if (inventory[i].dead) {
-				inventory.RemoveAt (i);
-				Debug.Log (inventory [i].name + " removed from inventory");
-				friendlyDeaths++;
-			}
-
-		
-
-
-		}
-
-
-		// IF FRIENDLY DIES, SUBTRACT ONE FROM CARDSINPLAY SO IT CYCLES PROPERLY
 	}
 
 
+	// Sets up the basics for the card game
+	public void SetupGame() 
 
-	public void SetupGame() {
+	{
+
+		inventory = Global.me.inventory;
+		enemies = Global.me.enemiesTransfer;
 		enemiesDead = 0;
 		cardsInPlay = 0;
 		cardsThatHaveAttacked = 0;
-
 		int count = 0;
+		List<Card> hand = new List<Card> ();
 
-		foreach (Card ca in inventory) {
-			GameObject bloop = Instantiate (cardBase, new Vector3(-7 + (2 * count), -3, 0), Quaternion.identity);
-			CardDisplay display = bloop.GetComponent<CardDisplay> ();
-			display.card = ca;
-			display.ChangeName();
-			count += 1;
-	
+		foreach (Card ca in inventory) 
+		
+		{
+				ca.inPlay = false;
+				GameObject bloop = Instantiate (cardBase, new Vector3 (-7 + (2 * count), -3, 0), Quaternion.identity);
+				CardDisplay display = bloop.GetComponent<CardDisplay> ();
+				display.card = ca;
+				display.ChangeName ();
+				count += 1;
 		}
 
+
 		count = 0;
-		foreach (Card car in enemies) {
+		foreach (Card car in enemies) 
+		{
 			GameObject blooop = Instantiate (cardBase, new Vector3 (3 + (2 * count), 2, 0), Quaternion.identity);
 			CardDisplay display = blooop.GetComponent<CardDisplay> ();
 			SpriteRenderer displaySprite = blooop.GetComponent<SpriteRenderer> ();
@@ -149,7 +103,9 @@ public class CardGameRunner : MonoBehaviour {
 
 	}
 
-	public void Combat(Card enemy) {
+	public void Combat(Card enemy) 
+
+	{
 
 		int playerRoll = cardSelected.RollDie ();
 		int enemyRoll = enemy.RollDie ();
@@ -179,7 +135,103 @@ public class CardGameRunner : MonoBehaviour {
 
 
 		}
+
+	public void DeathTests() 
+
+	{
+
+
+		if (enemiesDead == enemies.Count) {
+			// Debug.Log ("THIS WORKED WOO");
+			GiveReward ();
+			EndCardGame();
+
+		}
+
+		if (friendliesDead == 3) {
+			EndCardGame();
+
+		}
+
+	}
+
+
+	public void RemoveDeadCards() 
+
+	{
+		// Debug.Log ("length of inventory: " + inventory.Count);
+	
+		for (int i = 0; i < inventory.Count; i ++) 
+		{
+			//Debug.Log (inventory [i].name + " " + inventory [i].health);
+			if (inventory[i].dead) 
+			{
+				inventory.RemoveAt (i);
+				Debug.Log (inventory [i].name + " removed from inventory");
+				Global.me.playerHealth--;
+			}
+		}
+			
+		for (int n = 0; n < enemies.Count; n++) 
+		{
+			// 			Debug.Log (inventory [i].name + " " + inventory [i].health);
+			if (enemies [n].dead) 
+			{
+				enemies.RemoveAt (n);
+				Debug.Log (enemies [n].name + " removed from enemies");
+			}
+		}
+
+
+
+	}
+
+
+
+	public void CheckKeys() 
+
+	{
+
+		if (cardsThatHaveAttacked == cardsInPlay && cardsInPlay > 0)
+			CycleTurn ();
+		
+		
+		if (Input.GetKey (KeyCode.R) )
+		{
+
+			//			Debug.Log ("ED " + enemiesDead + " EC " + enemies.Count);
+			if (enemies.Count == 0) {
+				Card reward = Global.me.GetRandomCard();
+				inventory.Add (reward);
+			}
+
+			EndCardGame ();
+
+		}
+
+		if (Input.GetKeyDown (KeyCode.E)) 
+		{
+			CycleTurn ();
+		}
+			
+
+	}
+		
 					
+	public void EndCardGame() {
+		Debug.Log ("LATER");
+		Global.me.inventory = inventory;
+		UnityEngine.SceneManagement.SceneManager.LoadScene("basic_level");
+
+	}
+
+	public void GiveReward() {
+		Card loot = Global.me.GetRandomCard ();
+		print ("You have been rewarded " + loot.name);
+		inventory.Add (loot);
+
+	}
+
 
 	public void CardClicked(Card card) {
 
@@ -206,32 +258,11 @@ public class CardGameRunner : MonoBehaviour {
 			} else
 				Debug.Log ("this card has already attacked!");
 
-			// do damage stuff
 
 
 		}
 
-
-		/*
-
-		if (card.inPlay && card.hasAttacked && !card.isEnemyCard) {
-			Debug.Log ("This card has already attacked this turn!");
-		}
-
-
-		if (card.isEnemyCard && inCombat) {
-			Debug.Log (card.name + " has taken " + dmg + " damage");
-			card.TakeDamage (dmg);
-		//	UpdateDisplay ();
-			inCombat = false;
-		}
-
-*/
-			
-		// Debug.Log (card.name + " " + card.inPlay + " " + card.isEnemyCard);
-
-
-
+	
 	}
 
 
@@ -246,13 +277,6 @@ public class CardGameRunner : MonoBehaviour {
 
 
 	}
-
-	public void EnemyTurn() {
-
-
-
-	}
-
 
 
 }

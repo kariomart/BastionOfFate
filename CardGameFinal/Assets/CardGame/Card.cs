@@ -19,6 +19,7 @@ public class Card {
 	public bool selected = false;
 	public bool usedAbility = false; 
 	public bool dead = false;
+	public bool inHand = false;
 
 	// abilities
 	public bool a1_winsTies = false;

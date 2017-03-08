@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Global : MonoBehaviourSingleton <Global> {
 
+	public int playerHealth = 2;
+
 	public static Global me;
 //	public PanelController battlefieldPanel;
 //	public PlayerController Player;
@@ -19,6 +21,11 @@ public class Global : MonoBehaviourSingleton <Global> {
 	string a2 = "this ability reduces enemy roll by 1";
 	string a3 = "this ability heals friendlies each turn";
 	string a4 = "this card deals double damage but also takes double damage";
+
+	public GameObject chest;
+	public GameObject battleChest;
+	public GameObject wall;
+	public GameObject apple;
 
 	public Global Get() {
 		if (me == null) {
@@ -37,22 +44,36 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public Card GetRandomCard() {
 		int i = Random.Range (0, cards.Count);
 
-		if (i == 0) 
-			return new Joker ();
-		else if(i == 1) 
-			return new General ();
-		else if(i == 2) 
-			return new Zombie ();
-		else if(i == 3) 
-			return new Gambler ();
-		else if(i == 4) 
+		if (i == 0)
+			return new Ape ();
+		else if (i == 1)
 			return new Armadillo ();
-		else if(i == 5) 
-			return new Sniper ();
-		else if(i == 6) 
+		else if (i == 2)
+			return new Blackjack ();
+		else if (i == 3)
+			return new Cat ();
+		else if (i == 4)
+			return new Clown ();
+		else if (i == 5)
+			return new Gabe ();
+		else if (i == 6)
+			return new Gambler ();
+		else if (i == 7)
+			return new General ();
+		else if (i == 8)
+			return new Joker ();
+		else if (i == 9)
+			return new Magikarp ();
+		else if (i == 10)
 			return new Martyr ();
-
-
+		else if (i == 11)
+			return new Paladin ();
+		else if (i == 12)
+			return new Phoenix ();
+		else if (i == 13)
+			return new Sniper ();
+		else if(i == 14) 
+			return new Zombie ();
 
 
 		 else
@@ -65,6 +86,14 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	void Awake() {
 		Debug.Log ("GLOBAL AWAKE");
+		Debug.Log ("PLAYER HEALTH: " + playerHealth);
+
+		CheckWinCondition ();
+
+		if (playerHealth < 1) {
+			Application.LoadLevel (Application.loadedLevel);
+		}
+
 
 		if (me != null)
 			Destroy (gameObject);
@@ -73,16 +102,31 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 		DontDestroyOnLoad(transform.gameObject);
 
+		chest = GameObject.Find ("chest");
+		battleChest = GameObject.Find ("battleChest");
+		wall = GameObject.Find ("wall");
+		apple = GameObject.Find ("apple");
+
+
 		cards = new List<Card> ();
 		inventory = new List<Card> ();
 
-		cards.Add (new Joker());
-		cards.Add (new General());
-		cards.Add (new Zombie());
+		cards.Add (new Ape());
+		cards.Add (new Armadillo());
+		cards.Add (new Blackjack());
+		cards.Add (new Cat ());
+		cards.Add (new Clown ());
+		cards.Add (new Gabe ());
 		cards.Add (new Gambler ());
-		cards.Add (new Armadillo ());
-		cards.Add (new Sniper ());
+		cards.Add (new General ());
+		cards.Add (new Joker ());
+		cards.Add (new Magikarp ());
 		cards.Add (new Martyr ());
+		cards.Add (new Paladin ());
+		cards.Add (new Phoenix ());
+		cards.Add (new Sniper ());
+		cards.Add (new Zombie ());
+
 
 
 		abilities.Add (a1);
@@ -90,6 +134,55 @@ public class Global : MonoBehaviourSingleton <Global> {
 		abilities.Add (a3);
 		abilities.Add (a4);
 
+		GenerateOverworld ();
+		GiveDefaultCards ();
+
+
+	}
+
+
+	public void CheckWinCondition () {
+		
+
+
+
+	}
+
+	public void GiveDefaultCards() 
+
+	{
+		for(int i = 0; i < 5; i ++)
+		{
+			Card c = GetRandomCard ();
+			inventory.Add (c);
+		}
+	}
+
+
+
+	public void GenerateOverworld() {
+		int bounds = 30; 
+		for (int i = 0; i < Random.Range (5, 10); i++) 
+		{
+			Instantiate (chest, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
+		}
+
+		for (int i = 0; i < Random.Range (5, 10); i++) 
+		{
+			Instantiate (battleChest, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
+		}
+
+		for (int i = 0; i < Random.Range (50, 60); i += 1) 
+		{
+			Instantiate (wall, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
+			Instantiate (wall, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.Euler (0, 0, 90));
+
+			}
+
+		for (int i = 0; i < Random.Range (5, 10); i += 1) 
+		{
+			Instantiate (apple, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
+		}
 
 	}
 		

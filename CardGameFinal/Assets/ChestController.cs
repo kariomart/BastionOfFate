@@ -15,10 +15,12 @@ public class ChestController : MonoBehaviour {
 	List<Card> cards;
 	List<string> abilityStrings;
 	GameObject n;
-
+	GameObject player;
 
 	// Use this for initialization
 	void Start () {
+		player = GameObject.Find ("Player");
+		Global.me.chest = this.gameObject;
 		spriteRenderer = GetComponent<SpriteRenderer> ();
 		inventory = Global.me.inventory;
 		cards = Global.me.cards;
@@ -66,7 +68,7 @@ public class ChestController : MonoBehaviour {
 			spriteRenderer.sprite = open;
 			inventory.Add (loot);
 
-			n = Instantiate (notification, new Vector3 (-1, 1, 3), Quaternion.identity);
+			n = Instantiate (notification, new Vector3 (player.transform.position.x, player.transform.position.y, 10), Quaternion.identity);
 			GameObject nc = n.transform.GetChild (2).gameObject;
 			TextMesh nct = nc.GetComponent<TextMesh> ();
 			string a1 = abilityStrings [0];

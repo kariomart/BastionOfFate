@@ -12,6 +12,7 @@ public class BattleChest : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Global.me.battleChest = this.gameObject;
 		cards = Global.me.cards;
 
 		for(int i = 0; i < Random.Range(2, 4); i++){
