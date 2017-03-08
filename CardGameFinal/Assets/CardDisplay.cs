@@ -89,7 +89,7 @@ public class CardDisplay : MonoBehaviour {
 		card.inPlay = true;
 // 		Debug.Log (game.cardsInPlay);
 		transform.position = new Vector3 (-9 + (2 * game.cardsInPlay), 2, 0);
-		Debug.Log (card.name + " inPlay? " + card.inPlay + " isEnemyCard? " + card.isEnemyCard);
+//		Debug.Log (card.name + " inPlay? " + card.inPlay + " isEnemyCard? " + card.isEnemyCard);
 		// sprite.sortingOrder = game.cardsInPlay;
 		}
 
@@ -103,7 +103,7 @@ public class CardDisplay : MonoBehaviour {
 	void Update () {
 		UpdateDisplay ();
 
-		if (card.health < 1) {
+		if (card.dead) {
 			Destroy (this);
 
 		}

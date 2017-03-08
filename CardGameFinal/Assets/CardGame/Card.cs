@@ -18,7 +18,7 @@ public class Card {
 	public bool isEnemyCard = false;
 	public bool selected = false;
 	public bool usedAbility = false; 
-
+	public bool dead = false;
 
 	// abilities
 	public bool a1_winsTies = false;
@@ -27,6 +27,7 @@ public class Card {
 	public bool a4_doubleDamageBothWays = false;
 	public bool a5_killingBlow = false;
 	public bool a6_dealRollTakeRoll = false;
+
 
 	public Card() {
 	}
@@ -39,6 +40,7 @@ public class Card {
 		hasAttacked = crd.hasAttacked;
 		isEnemyCard = crd.isEnemyCard;
 		selected = crd.selected;
+		dead = crd.dead;
 
 		a1_winsTies = crd.a1_winsTies;
 		a2_reduceRoll = crd.a2_reduceRoll;
@@ -52,11 +54,12 @@ public class Card {
 	
 	// Update is called once per frame
 	void Update () {
+
 	}
 
 	public virtual int RollDie() {
 		int rand = Random.Range (1, 7);
-		Debug.Log ("generic roll");
+//		Debug.Log ("generic roll");
 		// Debug.Log (name + " has rolled a " + rand);
 		return rand;
 	}

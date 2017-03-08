@@ -12,7 +12,7 @@ public class Martyr : Card {
 
 	public override int RollDie ()
 	{
-		Debug.Log ("Overridden");
+//		Debug.Log ("Overridden");
 		int roll = Random.Range (1, 7);
 
 		if (roll == 1 || roll == 2 || roll == 3 || roll == 4 || roll == 5) {

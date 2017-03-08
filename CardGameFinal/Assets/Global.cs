@@ -64,7 +64,13 @@ public class Global : MonoBehaviourSingleton <Global> {
 	}
 
 	void Awake() {
+		Debug.Log ("GLOBAL AWAKE");
+
+		if (me != null)
+			Destroy (gameObject);
+
 		Get ();
+
 		DontDestroyOnLoad(transform.gameObject);
 
 		cards = new List<Card> ();
@@ -83,6 +89,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 		abilities.Add (a2);
 		abilities.Add (a3);
 		abilities.Add (a4);
+
 
 	}
 		

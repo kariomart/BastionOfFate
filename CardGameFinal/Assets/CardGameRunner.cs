@@ -10,13 +10,12 @@ public class CardGameRunner : MonoBehaviour {
 	List<Card> inventory;
 	List<Card> enemies;
 
-	public bool playerTurn = true;
-	public bool enemyTurn = false;
-	public int enemiesDead = 0;
 	public bool cardCurrentlySelected = false;
 	public Card cardSelected;
+	public int enemiesDead = 0;
 	public int cardsInPlay = 0;
 	public int cardsThatHaveAttacked = 0;
+	public int friendlyDeaths = 0;
 	public int dmg;
 
 
@@ -28,6 +27,12 @@ public class CardGameRunner : MonoBehaviour {
 		SetupGame ();
 		StartGame ();
 		PlayerTurn ();
+
+		foreach (Card card in inventory) {
+			card.inPlay = false;
+		}
+			
+
 	}
 		
 
@@ -37,19 +42,54 @@ public class CardGameRunner : MonoBehaviour {
 		if (cardsThatHaveAttacked == cardsInPlay && cardsInPlay > 0)
 			CycleTurn ();
 
-		if(enemiesDead == enemies.Count){
-			UnityEngine.SceneManagement.SceneManager.LoadScene ("basic_level");
-		}
-
 		if ((Input.GetKey (KeyCode.A) && cardCurrentlySelected && !cardSelected.usedAbility)) {
 			Debug.Log (cardSelected.name + " used its ability");
 			cardSelected.usedAbility = true;
 		}
 
-		if (Input.GetKey (KeyCode.R)) {
+		// if (Input.GetKey (KeyCode.R) || friendlyDeaths == 3 || enemiesDead == 100) {
+		if (Input.GetKey (KeyCode.R) ){
+
+			Debug.Log ("ED " + enemiesDead + " EC " + enemies.Count);
+			if (enemiesDead == enemies.Count) {
+				Card reward = Global.me.GetRandomCard();
+				inventory.Add (reward);
+			}
+
+			Debug.Log ("LATER");
+			Global.me.inventory = inventory;
 			UnityEngine.SceneManagement.SceneManager.LoadScene("basic_level");
 
 		}
+			
+		if (Input.GetKeyDown (KeyCode.E)) {
+			CycleTurn ();
+		}
+
+		foreach (Card card in inventory) {
+			if (card.health < 1) {
+				card.dead = true;
+				cardsInPlay--;
+				friendlyDeaths++;
+				Debug.Log (card.name + " has died!");
+			}
+		}
+			
+
+//		Debug.Log ("length of inventory: " + inventory.Count);
+		for (int i = 0; i < inventory.Count; i ++) {
+// 			Debug.Log (inventory [i].name + " " + inventory [i].health);
+			if (inventory[i].dead) {
+				inventory.RemoveAt (i);
+				Debug.Log (inventory [i].name + " removed from inventory");
+				friendlyDeaths++;
+			}
+
+		
+
+
+		}
+
 
 		// IF FRIENDLY DIES, SUBTRACT ONE FROM CARDSINPLAY SO IT CYCLES PROPERLY
 	}
@@ -57,6 +97,10 @@ public class CardGameRunner : MonoBehaviour {
 
 
 	public void SetupGame() {
+		enemiesDead = 0;
+		cardsInPlay = 0;
+		cardsThatHaveAttacked = 0;
+
 		int count = 0;
 
 		foreach (Card ca in inventory) {
@@ -96,6 +140,7 @@ public class CardGameRunner : MonoBehaviour {
 				if (card.a3_heal) {
 					card.health += Random.Range (0, 4);
 				}
+					
 			}
 
 		}
@@ -131,6 +176,7 @@ public class CardGameRunner : MonoBehaviour {
 
 		} else
 			Debug.Log("No damage has been dealt!");
+
 
 		}
 					

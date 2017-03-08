@@ -12,7 +12,6 @@ public class Joker : Card {
 
 	public override int RollDie ()
 	{
-		Debug.Log ("Overridden");
 		int roll = Random.Range (1, 7);
 
 		if (roll == 3) {
