@@ -160,25 +160,28 @@ public class CardGameRunner : MonoBehaviour {
 
 	{
 		// Debug.Log ("length of inventory: " + inventory.Count);
-	
-		for (int i = 0; i < inventory.Count; i ++) 
+		int j = 0;
+		for (int i = 0; i < inventory.Count - j; i ++) 
 		{
-			//Debug.Log (inventory [i].name + " " + inventory [i].health);
-			if (inventory[i].dead) 
+			// Debug.Log (inventory [i - j].name + " " + inventory [i - j].health);
+//			Debug.Log("i " + i + " j" + j + " count " + inventory.Count);
+			if (inventory[i - j].dead) 
 			{
-				inventory.RemoveAt (i);
-				Debug.Log (inventory [i].name + " removed from inventory");
+				Debug.Log (inventory [i - j].name + " removed from inventory");
+				inventory.RemoveAt (i- j);
 				Global.me.playerHealth--;
+				j++;
 			}
 		}
-			
-		for (int n = 0; n < enemies.Count; n++) 
+
+		int k = 0;
+		for (int n = 0; n < enemies.Count - k; n++) 
 		{
 			// 			Debug.Log (inventory [i].name + " " + inventory [i].health);
-			if (enemies [n].dead) 
+			if (enemies [n - k].dead) 
 			{
-				enemies.RemoveAt (n);
-				Debug.Log (enemies [n].name + " removed from enemies");
+				Debug.Log (enemies [n - k].name + " removed from enemies");
+				enemies.RemoveAt (n - k);
 			}
 		}
 
