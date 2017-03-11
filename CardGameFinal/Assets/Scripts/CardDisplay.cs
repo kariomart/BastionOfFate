@@ -48,12 +48,13 @@ public class CardDisplay : MonoBehaviour {
 		if(card.health <= 0 && !card.dead) {
 			card.dead = true;
 			sprite.color = new Color (0, 0, 0);
-			if(card.isEnemyCard) 
+			if (card.isEnemyCard)
 				game.enemiesDead++;
+				
 			
 			if (!card.isEnemyCard) {
-				game.friendliesDead++;
-				game.cardsInPlay--;
+				//game.friendliesDead++;
+				//game.cardsInPlay--;
 				Debug.Log (card.name + " has died!");
 			}
 		}

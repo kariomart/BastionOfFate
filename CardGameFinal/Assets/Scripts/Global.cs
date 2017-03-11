@@ -16,6 +16,8 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public List<Card> enemiesTransfer = new List<Card>();
 	public List<string> abilities = new List<string> ();
 	public int CardsInPlay;
+	public TextMesh console;
+
 
 	string a1 = "this ability wins ties";
 	string a2 = "this ability reduces enemy roll by 1";

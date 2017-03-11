@@ -16,9 +16,8 @@ public class BattleChest : MonoBehaviour {
 		cards = Global.me.cards;
 
 		for(int i = 0; i < Random.Range(2, 4); i++){
-			int rand = Random.Range (0, cards.Count - 1);
-			// Card ca = new Card (cards [rand]);
-			enemies.Add(new Card(cards[rand]));
+			Card ca = Global.me.GetRandomCard ();
+			enemies.Add(ca);
 		}
 	}
 	

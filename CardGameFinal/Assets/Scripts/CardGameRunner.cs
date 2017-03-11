@@ -45,9 +45,14 @@ public class CardGameRunner : MonoBehaviour {
 
 	{
 
+		GameObject consoleObject = GameObject.Find ("Console");
+		Global.me.console = consoleObject.GetComponent<TextMesh> ();
+
+
 		inventory = Global.me.inventory;
 		enemies = Global.me.enemiesTransfer;
 		enemiesDead = 0;
+		friendliesDead = 0;
 		cardsInPlay = 0;
 		cardsThatHaveAttacked = 0;
 		int count = 0;
@@ -86,6 +91,7 @@ public class CardGameRunner : MonoBehaviour {
 
 		int dmgRoll = Random.Range (0, 3);
 		Debug.Log("Your turn is over and the enemy has dealt " + dmgRoll + " to all the cards in play.");
+		Global.me.console.text = "Your turn is over and the enemy has dealt " + dmgRoll + " to all the cards in play.";
 		foreach (Card card in inventory){
 			if (card.inPlay){
 				card.TakeDamage (dmgRoll);
@@ -117,11 +123,13 @@ public class CardGameRunner : MonoBehaviour {
 		if (playerRoll > enemyRoll) {
 			enemy.TakeDamage (cardSelected.damage);
 			Debug.Log (cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name);
+			Global.me.console.text = cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name;
 		}
 		
 		if (enemyRoll > playerRoll) {
 			cardSelected.TakeDamage (enemy.damage);
 			Debug.Log (enemy.name + " has dealt " + enemy.damage + " to the " + cardSelected.name);
+			Global.me.console.text = enemy.name + " has dealt " + enemy.damage + " to the " + cardSelected.name;
 		}
 
 		if (enemyRoll == playerRoll)
@@ -129,9 +137,11 @@ public class CardGameRunner : MonoBehaviour {
 			cardSelected.WinTies ();
 			enemy.TakeDamage (cardSelected.damage);
 			Debug.Log (cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name);
+			Global.me.console.text = cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name;
 
 		} else
 			Debug.Log("No damage has been dealt!");
+			
 
 
 		}
@@ -142,13 +152,14 @@ public class CardGameRunner : MonoBehaviour {
 
 
 		if (enemiesDead == enemies.Count) {
-			// Debug.Log ("THIS WORKED WOO");
+			Debug.Log ("all enemies dead");
 			GiveReward ();
 			EndCardGame();
 
 		}
 
 		if (friendliesDead == 3) {
+			Debug.Log ("all friendlies dead");
 			EndCardGame();
 
 		}
@@ -168,8 +179,12 @@ public class CardGameRunner : MonoBehaviour {
 			if (inventory[i - j].dead) 
 			{
 				Debug.Log (inventory [i - j].name + " removed from inventory");
+				Global.me.console.text = (inventory [i - j].name + " removed from inventory");
 				inventory.RemoveAt (i- j);
 				Global.me.playerHealth--;
+				friendliesDead++;
+				cardsInPlay--;
+				Debug.Log ("FD" + friendliesDead);
 				j++;
 			}
 		}
@@ -181,7 +196,10 @@ public class CardGameRunner : MonoBehaviour {
 			if (enemies [n - k].dead) 
 			{
 				Debug.Log (enemies [n - k].name + " removed from enemies");
-				enemies.RemoveAt (n - k);
+				//enemies.RemoveAt (n - k);
+				n++;
+				//enemiesDead++;
+				Debug.Log ("ED " + enemiesDead + "EC " + enemies.Count);
 			}
 		}
 
@@ -243,6 +261,7 @@ public class CardGameRunner : MonoBehaviour {
 		}
 			
 		if (card.inPlay && !card.hasAttacked && !card.isEnemyCard) {
+			Global.me.console.text = ("You have selected " + card.name);
 			Debug.Log ("You have selected " + card.name);
 			cardCurrentlySelected = true;
 			cardSelected = card; 
@@ -259,7 +278,8 @@ public class CardGameRunner : MonoBehaviour {
 
 
 			} else
-				Debug.Log ("this card has already attacked!");
+				Debug.Log ("this card has  attacked!");
+				// Global.me.console.text =  ("this card has  attacked!");
 
 
 
@@ -270,12 +290,12 @@ public class CardGameRunner : MonoBehaviour {
 
 
 	public void StartGame() {
-		Debug.Log ("PHASE 1: PLACE UP TO 3 CARDS ONTO THE BATTLEFIELD");
+		Global.me.console.text = ("PHASE 1: PLACE UP TO 3 CARDS ONTO THE BATTLEFIELD");
 
 	}
 
 	public void PlayerTurn() {
-		Debug.Log ("PHASE 2: YOUR TURN. CLICK ANY OF YOUR CARDS AND THEN AN ENEMY CARD TO ATTACK IT. CARDS CAN ONLY ATTACK ONCE PER TURN.");
+		Global.me.console.text = ("PHASE 2: YOUR TURN. CLICK ANY OF YOUR CARDS AND THEN AN ENEMY CARD TO ATTACK IT. CARDS CAN ONLY ATTACK ONCE PER TURN.");
 
 
 

@@ -15,11 +15,11 @@ public class Magikarp : Card {
 		int roll = Random.Range (1, 7);
 
 
-		int roll1 = Random.Range (1, 7);
-		int roll2 = Random.Range (1, 7);
-		// int roll3 = Random.Range (1, 7);
+		int roll1 = Random.Range (1, 5);
+		int roll2 = Random.Range (1, 5);
+		int roll3 = Random.Range (1, 5);
 
-		if (roll1 == roll2) {
+		if (roll1 == roll2 && roll2 == roll3) {
 			Debug.Log ("MAGIKARP EVOLVED INTO GYARADOS");
 			health = 10;
 			damage = 10;
