@@ -16,6 +16,7 @@ public class ChestController : MonoBehaviour {
 	List<string> abilityStrings;
 	GameObject n;
 	GameObject player;
+	public AudioClip chestOpenSound;
 
 	// Use this for initialization
 	void Start () {
@@ -76,6 +77,7 @@ public class ChestController : MonoBehaviour {
 			string a3 = abilityStrings [2];
 			nct.text = ("You've obtained " + loot.name + "!" + "\n\nWhat ability do you want? These are the options:\n1. " + a1 + "\n2. " + a2 + "\n3. " + a3);
 
+			SoundController.me.PlaySound (chestOpenSound, 10f);
 			chestOpen = true;
 		}
 

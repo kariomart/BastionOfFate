@@ -5,7 +5,7 @@ using UnityEngine;
 public class CardDisplay : MonoBehaviour {
 
 	public TextMesh nameMesh;
-	public TextMesh tokenMesh;
+	public TextMesh damageMesh;
 	public TextMesh healthMesh;
 	public CardGameRunner game;
 
@@ -21,13 +21,13 @@ public class CardDisplay : MonoBehaviour {
 
 		originalPos = new Vector2 (transform.position.x, transform.position.y); 
 		GameObject n = transform.GetChild (0).gameObject;
-		nameMesh = n.GetComponent<TextMesh> ();
+		damageMesh = n.GetComponent<TextMesh> ();
 
 		GameObject t = transform.GetChild (1).gameObject;
-		tokenMesh = t.GetComponent<TextMesh> ();
+		healthMesh = t.GetComponent<TextMesh> ();
 
 		GameObject d = transform.GetChild (2).gameObject;
-		healthMesh = d.GetComponent<TextMesh> ();
+		nameMesh = d.GetComponent<TextMesh> ();
 
 		GameObject g = GameObject.Find ("CardGameRunner");
 		game = g.GetComponent<CardGameRunner> ();
@@ -35,8 +35,8 @@ public class CardDisplay : MonoBehaviour {
 	}
 
 	public void UpdateDisplay() {
-		tokenMesh.text = ("tokens: " + (card.tokens));
-		healthMesh.text = ("health: " + (card.health));
+		damageMesh.text = ("" + (card.damage));
+		healthMesh.text = ("" + (card.health));
 
 //		if (game.cardCurrentlySelected && !card.isEnemyCard) {
 //			sprite.color = new Color (0, 0, 255);
@@ -64,7 +64,7 @@ public class CardDisplay : MonoBehaviour {
 	public void ChangeName () {
 
 		nameMesh.text = card.name;
-		tokenMesh.text = ("tokens: " + (card.tokens));
+		damageMesh.text = ("damage: " + (card.damage));
 		healthMesh.text = ("health: " + (card.health));
 
 	}
