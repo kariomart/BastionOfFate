@@ -18,6 +18,9 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public int CardsInPlay;
 	public TextMesh console;
 
+	public GameObject cardGameRunner; 
+	public GameObject overworld;
+
 
 	string a1 = "this ability wins ties";
 	string a2 = "this ability reduces enemy roll by 1";
@@ -28,6 +31,9 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public GameObject battleChest;
 	public GameObject wall;
 	public GameObject apple;
+	public GameObject player;
+	public Camera playerCam;
+	public Camera cardCam;
 
 	public Global Get() {
 		if (me == null) {
@@ -90,6 +96,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 		Debug.Log ("GLOBAL AWAKE");
 		Debug.Log ("PLAYER HEALTH: " + playerHealth);
 
+
 		CheckWinCondition ();
 
 		if (playerHealth < 1) {
@@ -108,6 +115,17 @@ public class Global : MonoBehaviourSingleton <Global> {
 		battleChest = GameObject.Find ("battleChest");
 		wall = GameObject.Find ("wall");
 		apple = GameObject.Find ("apple");
+		player = GameObject.Find ("Player");
+
+		GameObject p = player.transform.GetChild (0).gameObject;
+		playerCam = p.GetComponent<Camera> ();
+
+		//GameObject c = GameObject.Find ("CardCamera");
+		// cardCam = c.GetComponent<Camera> ();
+
+
+		// cardGameRunner = GameObject.Find ("CardGame");
+		// overworld = GameObject.Find ("overworld");
 
 
 		cards = new List<Card> ();
@@ -136,8 +154,8 @@ public class Global : MonoBehaviourSingleton <Global> {
 		abilities.Add (a3);
 		abilities.Add (a4);
 
-		GenerateOverworld ();
-		GiveDefaultCards ();
+		//GenerateOverworld ();
+		//GiveDefaultCards ();
 
 
 	}
@@ -159,6 +177,19 @@ public class Global : MonoBehaviourSingleton <Global> {
 			inventory.Add (c);
 		}
 	}
+
+
+	public void RunCardGame() {
+		Debug.Log ("CARD GAME RUNNING");
+		// Debug.Log (cardGameRunner);
+		playerCam.gameObject.SetActive(false);
+		cardCam.gameObject.SetActive(true);
+		cardGameRunner.SetActive (true);
+		//overworld.gameObject.SetActive (false);
+
+	}
+
+
 
 
 

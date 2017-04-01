@@ -9,6 +9,9 @@ public class CardDisplay : MonoBehaviour {
 	public TextMesh healthMesh;
 	public CardGameRunner game;
 
+	public BoxCollider2D rightArrow;
+	public BoxCollider2D leftArrow;
+
 	public SpriteRenderer sprite;
 	Vector2 originalPos;
 	public Card card;			
@@ -29,8 +32,16 @@ public class CardDisplay : MonoBehaviour {
 		GameObject d = transform.GetChild (2).gameObject;
 		nameMesh = d.GetComponent<TextMesh> ();
 
-		GameObject g = GameObject.Find ("CardGameRunner");
+		//GameObject r = transform.GetChild (3).gameObject;
+		//rightArrow = r.GetComponent<BoxCollider2D> ();
+
+		//GameObject l = transform.GetChild (4).gameObject;
+		//leftArrow = l.GetComponent<BoxCollider2D> ();
+
+		GameObject g = GameObject.Find ("CardGame");
 		game = g.GetComponent<CardGameRunner> ();
+
+	
 
 	}
 
@@ -64,8 +75,8 @@ public class CardDisplay : MonoBehaviour {
 	public void ChangeName () {
 
 		nameMesh.text = card.name;
-		damageMesh.text = ("damage: " + (card.damage));
-		healthMesh.text = ("health: " + (card.health));
+		damageMesh.text = ("" + card.damage);
+		healthMesh.text = ("" + card.health);
 
 	}
 
@@ -97,7 +108,7 @@ public class CardDisplay : MonoBehaviour {
 		if (card.inPlay == false && !card.isEnemyCard && game.cardsInPlay < 4) {
 		card.inPlay = true;
 // 		Debug.Log (game.cardsInPlay);
-		transform.position = new Vector3 (-9 + (2 * game.cardsInPlay), 2, 0);
+		transform.position = new Vector3 (39 + (2 * game.cardsInPlay), 2, 0);
 //		Debug.Log (card.name + " inPlay? " + card.inPlay + " isEnemyCard? " + card.isEnemyCard);
 		// sprite.sortingOrder = game.cardsInPlay;
 		}

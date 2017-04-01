@@ -28,6 +28,8 @@ public class BattleChest : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		Global.me.CurrentBattle (enemies);
-		UnityEngine.SceneManagement.SceneManager.LoadScene ("CardGame");
+		Global.me.RunCardGame ();
+
+		// UnityEngine.SceneManagement.SceneManager.LoadScene ("CardGame");
 	}
 }

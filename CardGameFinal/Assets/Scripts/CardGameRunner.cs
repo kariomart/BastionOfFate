@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class CardGameRunner : MonoBehaviour {
 
 	public GameObject cardBase;
+
 	List<Card> inventory;
 	List<Card> enemies;
 
@@ -19,9 +20,17 @@ public class CardGameRunner : MonoBehaviour {
 	public int dmg;
 	public int cardsInHand = 0;
 
-	// Use this for initialization
-	void Start () {
+	void Awake() {
+		Global.me.cardGameRunner = this.gameObject;
+	//	gameObject.SetActive (false);
 
+
+	}
+
+	// Use this for initialization
+	void OnEnable () {
+
+		//Debug.Log ("on enable");
 		SetupGame ();
 		StartGame ();
 		PlayerTurn ();
@@ -45,24 +54,25 @@ public class CardGameRunner : MonoBehaviour {
 
 	{
 
-		GameObject consoleObject = GameObject.Find ("Console");
-		Global.me.console = consoleObject.GetComponent<TextMesh> ();
+		// GameObject consoleObject = GameObject.Find ("Console");
+		// Global.me.console = consoleObject.GetComponent<TextMesh> ();
 
-
+		Debug.Log (enemies + " setup game");
 		inventory = Global.me.inventory;
 		enemies = Global.me.enemiesTransfer;
+
 		enemiesDead = 0;
 		friendliesDead = 0;
 		cardsInPlay = 0;
 		cardsThatHaveAttacked = 0;
 		int count = 0;
-		List<Card> hand = new List<Card> ();
+		// List<Card> hand = new List<Card> ();
 
 		foreach (Card ca in inventory) 
 		
 		{
 				ca.inPlay = false;
-				GameObject bloop = Instantiate (cardBase, new Vector3 (-7 + (2 * count), -3, 0), Quaternion.identity);
+				GameObject bloop = Instantiate (cardBase, new Vector3 (41 + (2 * count), -3, 0), Quaternion.identity);
 				CardDisplay display = bloop.GetComponent<CardDisplay> ();
 				display.card = ca;
 				display.ChangeName ();
@@ -73,7 +83,7 @@ public class CardGameRunner : MonoBehaviour {
 		count = 0;
 		foreach (Card car in enemies) 
 		{
-			GameObject blooop = Instantiate (cardBase, new Vector3 (3 + (2 * count), 2, 0), Quaternion.identity);
+			GameObject blooop = Instantiate (cardBase, new Vector3 (51 + (2 * count), 2, 0), Quaternion.identity);
 			CardDisplay display = blooop.GetComponent<CardDisplay> ();
 			SpriteRenderer displaySprite = blooop.GetComponent<SpriteRenderer> ();
 
@@ -149,8 +159,7 @@ public class CardGameRunner : MonoBehaviour {
 	public void DeathTests() 
 
 	{
-
-
+//		Debug.Log (enemies + " Death Tests");
 		if (enemiesDead == enemies.Count) {
 			Debug.Log ("all enemies dead");
 			GiveReward ();
@@ -195,11 +204,11 @@ public class CardGameRunner : MonoBehaviour {
 			// 			Debug.Log (inventory [i].name + " " + inventory [i].health);
 			if (enemies [n - k].dead) 
 			{
-				Debug.Log (enemies [n - k].name + " removed from enemies");
+				//Debug.Log (enemies [n - k].name + " removed from enemies");
 				//enemies.RemoveAt (n - k);
 				n++;
 				//enemiesDead++;
-				Debug.Log ("ED " + enemiesDead + "EC " + enemies.Count);
+				//Debug.Log ("ED " + enemiesDead + "EC " + enemies.Count);
 			}
 		}
 
@@ -217,7 +226,7 @@ public class CardGameRunner : MonoBehaviour {
 			CycleTurn ();
 		
 		
-		if (Input.GetKey (KeyCode.R) )
+		if (Input.GetKeyDown (KeyCode.R) )
 		{
 
 			//			Debug.Log ("ED " + enemiesDead + " EC " + enemies.Count);
@@ -241,8 +250,10 @@ public class CardGameRunner : MonoBehaviour {
 					
 	public void EndCardGame() {
 		Debug.Log ("LATER");
+		Global.me.cardCam.gameObject.SetActive (false);
+		Global.me.playerCam.gameObject.SetActive (true);
 		Global.me.inventory = inventory;
-		UnityEngine.SceneManagement.SceneManager.LoadScene("basic_level");
+		//UnityEngine.SceneManagement.SceneManager.LoadScene("basic_level");
 
 	}
 
