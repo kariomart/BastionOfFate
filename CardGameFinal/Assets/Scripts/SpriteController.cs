@@ -95,6 +95,7 @@ public class SpriteController : MonoBehaviour {
 			//particles.Stop ();
 		}
 
+		anim.SetFloat ("speed", horizontal + vertical);
 
 
 			

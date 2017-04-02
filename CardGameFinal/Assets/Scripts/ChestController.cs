@@ -5,7 +5,7 @@ using UnityEngine;
 public class ChestController : MonoBehaviour {
 
 	SpriteRenderer spriteRenderer;
-	public Sprite open;
+	//public Sprite open;
 	public Sprite closed;
 	public Card loot;
 	public bool chestOpen = false;
@@ -66,7 +66,7 @@ public class ChestController : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (!chestOpen) {
-			spriteRenderer.sprite = open;
+			//spriteRenderer.sprite = open;
 			inventory.Add (loot);
 
 			n = Instantiate (notification, new Vector3 (player.transform.position.x, player.transform.position.y, 10), Quaternion.identity);
