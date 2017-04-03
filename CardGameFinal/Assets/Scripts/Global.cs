@@ -111,8 +111,8 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 		DontDestroyOnLoad(transform.gameObject);
 
-		chest = GameObject.Find ("chest");
-		battleChest = GameObject.Find ("battleChest");
+		//chest = GameObject.Find ("soul");
+		battleChest = GameObject.Find ("enemy");
 		wall = GameObject.Find ("wall");
 		apple = GameObject.Find ("apple");
 		player = GameObject.Find ("Player");
@@ -192,37 +192,37 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 
 
-
-	public void GenerateOverworld() {
-		int bounds = 30; 
-		for (int i = 0; i < Random.Range (5, 10); i++) 
-		{
-			Instantiate (chest, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
-		}
-
-		for (int i = 0; i < Random.Range (5, 10); i++) 
-		{
-			Instantiate (battleChest, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
-		}
-
-		for (int i = 0; i < Random.Range (50, 60); i += 1) 
-		{
-			Instantiate (wall, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
-			Instantiate (wall, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.Euler (0, 0, 90));
-
-			}
-
-		for (int i = 0; i < Random.Range (5, 10); i += 1) 
-		{
-			Instantiate (apple, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
-		}
-
-	}
-		
-
-
-
-
+//
+//	public void GenerateOverworld() {
+//		int bounds = 30; 
+//		for (int i = 0; i < Random.Range (5, 10); i++) 
+//		{
+//			Instantiate (chest, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
+//		}
+//
+//		for (int i = 0; i < Random.Range (5, 10); i++) 
+//		{
+//			Instantiate (battleChest, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
+//		}
+//
+//		for (int i = 0; i < Random.Range (50, 60); i += 1) 
+//		{
+//			Instantiate (wall, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
+//			Instantiate (wall, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.Euler (0, 0, 90));
+//
+//			}
+//
+//		for (int i = 0; i < Random.Range (5, 10); i += 1) 
+//		{
+//			Instantiate (apple, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
+//		}
+//
+//	}
+//		
+//
+//
+//
+//
 
 
 	// Use this for initialization

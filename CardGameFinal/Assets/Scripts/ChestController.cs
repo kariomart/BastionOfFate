@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ChestController : MonoBehaviour {
 
-	SpriteRenderer spriteRenderer;
-	//public Sprite open;
-	public Sprite closed;
+	public SpriteRenderer sprite;
+	public Sprite soul;
+	public Sprite rubble;
 	public Card loot;
 	public bool chestOpen = false;
 	public bool abilityChosen = false;
@@ -17,16 +17,18 @@ public class ChestController : MonoBehaviour {
 	GameObject n;
 	GameObject player;
 	public AudioClip chestOpenSound;
+	public Animator anim;
 
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find ("Player");
 		Global.me.chest = this.gameObject;
-		spriteRenderer = GetComponent<SpriteRenderer> ();
+		sprite = GetComponent<SpriteRenderer> ();
 		inventory = Global.me.inventory;
 		cards = Global.me.cards;
 		abilityStrings = Global.me.abilities;
-
+		sprite = GetComponent<SpriteRenderer> ();
+		anim = GetComponent<Animator> ();
 
 		int rand = Random.Range (0, cards.Count - 1);
 		loot = Global.me.GetRandomCard ();
@@ -61,6 +63,12 @@ public class ChestController : MonoBehaviour {
 				Destroy (n);
 			}
 		
+		}
+
+		if (chestOpen && abilityChosen) {
+			anim.Stop ();
+			sprite.sprite = rubble;
+			
 		}
 	}
 

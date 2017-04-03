@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c0eaf37f8dc524315bf6fd38de7a57af
-timeCreated: 1490801387
+timeCreated: 1491163737
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -13,6 +13,9 @@ TextureImporter:
     21300012: gengar_animations_6
     21300014: gengar_animations_7
     21300016: gengar_animations_9
+    21300018: gengar_animations_8
+    21300020: gengar_animations_10
+    21300022: gengar_animations_11
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -87,7 +90,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -100,7 +103,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -108,21 +111,8 @@ TextureImporter:
       name: gengar_animations_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: gengar_animations_3
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 128
+        x: 132
+        y: 192
         width: 64
         height: 64
       alignment: 0
@@ -135,7 +125,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 64
+        y: 128
         width: 64
         height: 64
       alignment: 0
@@ -148,7 +138,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 64
+        y: 128
         width: 64
         height: 64
       alignment: 0
@@ -160,8 +150,8 @@ TextureImporter:
       name: gengar_animations_6
       rect:
         serializedVersion: 2
-        x: 146
-        y: 63
+        x: 0
+        y: 64
         width: 64
         height: 64
       alignment: 0
@@ -173,8 +163,21 @@ TextureImporter:
       name: gengar_animations_7
       rect:
         serializedVersion: 2
-        x: 218
-        y: 65
+        x: 66
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: gengar_animations_8
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 64
         width: 64
         height: 64
       alignment: 0
@@ -184,6 +187,19 @@ TextureImporter:
       tessellationDetail: 0
     - serializedVersion: 2
       name: gengar_animations_9
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: gengar_animations_11
       rect:
         serializedVersion: 2
         x: 0
