@@ -9,11 +9,16 @@ public class BattleChest : MonoBehaviour {
 
 	List<Card> cards;
 	public List<Card> enemies = new List<Card>();
+	public Rigidbody2D rigid;
+	public SpriteRenderer sprite;
+	int speed = 20;
 
 	// Use this for initialization
 	void Start () {
 		Global.me.battleChest = this.gameObject;
 		cards = Global.me.cards;
+		rigid = GetComponent<Rigidbody2D> ();
+		sprite = GetComponent<SpriteRenderer> ();
 
 		for(int i = 0; i < Random.Range(2, 4); i++){
 			Card ca = Global.me.GetRandomCard ();
@@ -23,12 +28,27 @@ public class BattleChest : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		Vector2 force = new Vector2(Random.Range(-speed, speed), Random.Range(-speed, speed));
+		rigid.AddForce (force);
+
+		int rand = Random.Range (0, 30);
+		if (rand == 10) {	
+			if (sprite.flipX = true)
+				sprite.flipX = false;
+			else
+				sprite.flipX = true;
+		}
 		
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		Global.me.CurrentBattle (enemies);
-		Global.me.RunCardGame ();
+		if (other.name == "Player") {
+			if (Global.me.inCardGame == false) {
+				Global.me.CurrentBattle (enemies);
+				Global.me.RunCardGame ();
+			}
+		}
 
 		// UnityEngine.SceneManagement.SceneManager.LoadScene ("CardGame");
 	}

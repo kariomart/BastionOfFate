@@ -13,12 +13,15 @@ public class CardGameRunner : MonoBehaviour {
 
 	public bool cardCurrentlySelected = false;
 	public Card cardSelected;
+	public bool inBattle = false;
 	public int enemiesDead = 0;
 	public int cardsInPlay = 0;
 	public int cardsThatHaveAttacked = 0;
 	public int friendliesDead = 0;
 	public int dmg;
 	public int cardsInHand = 0;
+
+	public GameObject cardGamePlayer;
 
 	void Awake() {
 		Global.me.cardGameRunner = this.gameObject;
@@ -56,26 +59,24 @@ public class CardGameRunner : MonoBehaviour {
 
 		// GameObject consoleObject = GameObject.Find ("Console");
 		// Global.me.console = consoleObject.GetComponent<TextMesh> ();
-
+		inBattle = true;
 		Debug.Log (enemies + " setup game");
 		inventory = Global.me.inventory;
 		enemies = Global.me.enemiesTransfer;
+		cardGamePlayer = GameObject.Find ("CardGamePlayer");
 
 		enemiesDead = 0;
-		friendliesDead = 0;
-		cardsInPlay = 0;
-		cardsThatHaveAttacked = 0;
 		int count = 0;
-		// List<Card> hand = new List<Card> ();
+	
 
 		foreach (Card ca in inventory) 
 		
 		{
 				ca.inPlay = false;
 				GameObject bloop = Instantiate (cardBase, new Vector3 (41 + (2 * count), -3, 0), Quaternion.identity);
-				CardDisplay display = bloop.GetComponent<CardDisplay> ();
+				CardDisplayNew display = bloop.GetComponent<CardDisplayNew> ();
 				display.card = ca;
-				display.ChangeName ();
+				//display.ChangeName ();
 				count += 1;
 		}
 
@@ -84,13 +85,13 @@ public class CardGameRunner : MonoBehaviour {
 		foreach (Card car in enemies) 
 		{
 			GameObject blooop = Instantiate (cardBase, new Vector3 (51 + (2 * count), 2, 0), Quaternion.identity);
-			CardDisplay display = blooop.GetComponent<CardDisplay> ();
+			CardDisplayNew display = blooop.GetComponent<CardDisplayNew> ();
 			SpriteRenderer displaySprite = blooop.GetComponent<SpriteRenderer> ();
 
 			displaySprite.color = new Color (255, 0, 0);
 			display.card = car;
-			display.ChangeName ();
-			display.card.isEnemyCard = true;
+			//display.ChangeName ();
+			car.isEnemyCard = true;
 
 			count += 1;
 		}
@@ -125,6 +126,7 @@ public class CardGameRunner : MonoBehaviour {
 
 		int playerRoll = cardSelected.RollDie ();
 		int enemyRoll = enemy.RollDie ();
+
 		if (cardSelected.a2_reduceRoll)
 			enemyRoll --;
 		
@@ -133,13 +135,13 @@ public class CardGameRunner : MonoBehaviour {
 		if (playerRoll > enemyRoll) {
 			enemy.TakeDamage (cardSelected.damage);
 			Debug.Log (cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name);
-			Global.me.console.text = cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name;
+			//Global.me.console.text = cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name;
 		}
 		
 		if (enemyRoll > playerRoll) {
 			cardSelected.TakeDamage (enemy.damage);
 			Debug.Log (enemy.name + " has dealt " + enemy.damage + " to the " + cardSelected.name);
-			Global.me.console.text = enemy.name + " has dealt " + enemy.damage + " to the " + cardSelected.name;
+			//Global.me.console.text = enemy.name + " has dealt " + enemy.damage + " to the " + cardSelected.name;
 		}
 
 		if (enemyRoll == playerRoll)
@@ -147,7 +149,7 @@ public class CardGameRunner : MonoBehaviour {
 			cardSelected.WinTies ();
 			enemy.TakeDamage (cardSelected.damage);
 			Debug.Log (cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name);
-			Global.me.console.text = cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name;
+			//Global.me.console.text = cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name;
 
 		} else
 			Debug.Log("No damage has been dealt!");
@@ -159,20 +161,36 @@ public class CardGameRunner : MonoBehaviour {
 	public void DeathTests() 
 
 	{
+
+		foreach (Card ca in inventory) {
+			if (ca.health < 1) {
+				ca.dead = true;
+
+			}
+
+			foreach (Card em in enemies) {
+				if (em.health < 1) {
+					em.dead = true;
+
+				}
+		}
+			
 //		Debug.Log (enemies + " Death Tests");
-		if (enemiesDead == enemies.Count) {
+			if (enemiesDead == enemies.Count && inBattle) {
 			Debug.Log ("all enemies dead");
 			GiveReward ();
 			EndCardGame();
+			inBattle = false;
 
-		}
+			}
 
-		if (friendliesDead == 3) {
-			Debug.Log ("all friendlies dead");
+			if (inventory.Count < 1) {
+			Debug.Log ("GG");
 			EndCardGame();
 
-		}
+			}
 
+		}
 	}
 
 
@@ -188,12 +206,10 @@ public class CardGameRunner : MonoBehaviour {
 			if (inventory[i - j].dead) 
 			{
 				Debug.Log (inventory [i - j].name + " removed from inventory");
-				Global.me.console.text = (inventory [i - j].name + " removed from inventory");
 				inventory.RemoveAt (i- j);
-				Global.me.playerHealth--;
 				friendliesDead++;
-				cardsInPlay--;
 				Debug.Log ("FD" + friendliesDead);
+				Debug.Log ("INV " + inventory.Count);
 				j++;
 			}
 		}
@@ -204,8 +220,8 @@ public class CardGameRunner : MonoBehaviour {
 			// 			Debug.Log (inventory [i].name + " " + inventory [i].health);
 			if (enemies [n - k].dead) 
 			{
-				//Debug.Log (enemies [n - k].name + " removed from enemies");
-				//enemies.RemoveAt (n - k);
+				Debug.Log (enemies [n - k].name + " removed from enemies");
+				enemies.RemoveAt (n - k);
 				n++;
 				//enemiesDead++;
 				//Debug.Log ("ED " + enemiesDead + "EC " + enemies.Count);
@@ -222,15 +238,13 @@ public class CardGameRunner : MonoBehaviour {
 
 	{
 
-		if (cardsThatHaveAttacked == cardsInPlay && cardsInPlay > 0)
-			CycleTurn ();
-		
 		
 		if (Input.GetKeyDown (KeyCode.R) )
 		{
 
 			//			Debug.Log ("ED " + enemiesDead + " EC " + enemies.Count);
 			if (enemies.Count == 0) {
+				
 				Card reward = Global.me.GetRandomCard();
 				inventory.Add (reward);
 			}
@@ -239,6 +253,7 @@ public class CardGameRunner : MonoBehaviour {
 
 		}
 
+
 		if (Input.GetKeyDown (KeyCode.E)) 
 		{
 			CycleTurn ();
@@ -246,13 +261,22 @@ public class CardGameRunner : MonoBehaviour {
 			
 
 	}
+
+	public void ChangePlayer(Card card) {
+		SpriteRenderer sprite = cardGamePlayer.GetComponent<SpriteRenderer> ();
+		sprite.color = card.color;
+
+	}
 		
 					
 	public void EndCardGame() {
 		Debug.Log ("LATER");
+		Global.me.backgroundMusic.clip = Global.me.overworldMusic;
+		Global.me.backgroundMusic.Play ();
 		Global.me.cardCam.gameObject.SetActive (false);
 		Global.me.playerCam.gameObject.SetActive (true);
 		Global.me.inventory = inventory;
+		Global.me.inCardGame = false;
 		//UnityEngine.SceneManagement.SceneManager.LoadScene("basic_level");
 
 	}
@@ -267,30 +291,31 @@ public class CardGameRunner : MonoBehaviour {
 
 	public void CardClicked(Card card) {
 
-		if (!card.inPlay && !card.isEnemyCard) {
-			cardsInPlay++;
-		}
+//		if (!card.inPlay && !card.isEnemyCard) {
+//			cardsInPlay++;
+//		}
 			
-		if (card.inPlay && !card.hasAttacked && !card.isEnemyCard) {
-			Global.me.console.text = ("You have selected " + card.name);
+
+		if (!card.isEnemyCard) {
+//			Global.me.console.text = ("You have selected " + card.name);
 			Debug.Log ("You have selected " + card.name);
 			cardCurrentlySelected = true;
 			cardSelected = card; 
 		}
 			
 
-		if (card.isEnemyCard && cardCurrentlySelected) {
+		if (card.isEnemyCard && cardCurrentlySelected ) {
 
 
-			if (!cardSelected.hasAttacked) {
+//			if (!cardSelected.hasAttacked) {
 				Combat (card);
-				cardSelected.hasAttacked = true;
-				cardsThatHaveAttacked++;
-
-
-			} else
-				Debug.Log ("this card has  attacked!");
-				// Global.me.console.text =  ("this card has  attacked!");
+				//cardSelected.hasAttacked = true;
+				//cardsThatHaveAttacked++;
+//
+//
+//			} else
+//				Debug.Log ("this card has  attacked!");
+//				// Global.me.console.text =  ("this card has  attacked!");
 
 
 
@@ -301,12 +326,12 @@ public class CardGameRunner : MonoBehaviour {
 
 
 	public void StartGame() {
-		Global.me.console.text = ("PHASE 1: PLACE UP TO 3 CARDS ONTO THE BATTLEFIELD");
+//		Global.me.console.text = ("PHASE 1: PLACE UP TO 3 CARDS ONTO THE BATTLEFIELD");
 
 	}
 
 	public void PlayerTurn() {
-		Global.me.console.text = ("PHASE 2: YOUR TURN. CLICK ANY OF YOUR CARDS AND THEN AN ENEMY CARD TO ATTACK IT. CARDS CAN ONLY ATTACK ONCE PER TURN.");
+		//Global.me.console.text = ("PHASE 2: YOUR TURN. CLICK ANY OF YOUR CARDS AND THEN AN ENEMY CARD TO ATTACK IT. CARDS CAN ONLY ATTACK ONCE PER TURN.");
 
 
 

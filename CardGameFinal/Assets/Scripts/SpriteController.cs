@@ -14,7 +14,7 @@ public class SpriteController : MonoBehaviour {
 	int vertical;
 	List<Card> inventory;
 	Animator anim;
-
+	public AudioClip overworldMusic;
 
 	// Use this for initialization
 	void Start () {

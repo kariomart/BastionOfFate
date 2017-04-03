@@ -18,9 +18,11 @@ public class ChestController : MonoBehaviour {
 	GameObject player;
 	public AudioClip chestOpenSound;
 	public Animator anim;
+	public ParticleSystem poof;
 
 	// Use this for initialization
 	void Start () {
+		
 		player = GameObject.Find ("Player");
 		Global.me.chest = this.gameObject;
 		sprite = GetComponent<SpriteRenderer> ();
@@ -66,14 +68,18 @@ public class ChestController : MonoBehaviour {
 		}
 
 		if (chestOpen && abilityChosen) {
-			anim.Stop ();
-			sprite.sprite = rubble;
+
+			if (sprite.sprite != rubble) {
+				poof.Play();
+				anim.Stop ();
+				sprite.sprite = rubble;
+			}
 			
 		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (!chestOpen) {
+		if (!chestOpen && other.name == "Player") {
 			//spriteRenderer.sprite = open;
 			inventory.Add (loot);
 
@@ -85,6 +91,7 @@ public class ChestController : MonoBehaviour {
 			string a3 = abilityStrings [2];
 			nct.text = ("You've obtained " + loot.name + "!" + "\n\nWhat ability do you want? These are the options:\n1. " + a1 + "\n2. " + a2 + "\n3. " + a3);
 
+			Debug.Log (SoundController.me);
 			SoundController.me.PlaySound (chestOpenSound, 10f);
 			chestOpen = true;
 		}

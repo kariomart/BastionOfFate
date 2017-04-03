@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class CardDisplay : MonoBehaviour {
 
-	public TextMesh nameMesh;
-	public TextMesh damageMesh;
-	public TextMesh healthMesh;
+//	public TextMesh nameMesh;
+//	public TextMesh damageMesh;
+//	public TextMesh healthMesh;
 	public CardGameRunner game;
 
-	public BoxCollider2D rightArrow;
-	public BoxCollider2D leftArrow;
 
 	public SpriteRenderer sprite;
 	Vector2 originalPos;
@@ -22,15 +20,15 @@ public class CardDisplay : MonoBehaviour {
 
 		sprite = GetComponent<SpriteRenderer> ();
 
-		originalPos = new Vector2 (transform.position.x, transform.position.y); 
-		GameObject n = transform.GetChild (0).gameObject;
-		damageMesh = n.GetComponent<TextMesh> ();
-
-		GameObject t = transform.GetChild (1).gameObject;
-		healthMesh = t.GetComponent<TextMesh> ();
-
-		GameObject d = transform.GetChild (2).gameObject;
-		nameMesh = d.GetComponent<TextMesh> ();
+//		originalPos = new Vector2 (transform.position.x, transform.position.y); 
+//		GameObject n = transform.GetChild (0).gameObject;
+//		damageMesh = n.GetComponent<TextMesh> ();
+//
+//		GameObject t = transform.GetChild (1).gameObject;
+//		healthMesh = t.GetComponent<TextMesh> ();
+//
+//		GameObject d = transform.GetChild (2).gameObject;
+//		nameMesh = d.GetComponent<TextMesh> ();
 
 		//GameObject r = transform.GetChild (3).gameObject;
 		//rightArrow = r.GetComponent<BoxCollider2D> ();
@@ -46,8 +44,8 @@ public class CardDisplay : MonoBehaviour {
 	}
 
 	public void UpdateDisplay() {
-		damageMesh.text = ("" + (card.damage));
-		healthMesh.text = ("" + (card.health));
+		//damageMesh.text = ("" + (card.damage));
+		//healthMesh.text = ("" + (card.health));
 
 //		if (game.cardCurrentlySelected && !card.isEnemyCard) {
 //			sprite.color = new Color (0, 0, 255);
@@ -74,9 +72,9 @@ public class CardDisplay : MonoBehaviour {
 
 	public void ChangeName () {
 
-		nameMesh.text = card.name;
-		damageMesh.text = ("" + card.damage);
-		healthMesh.text = ("" + card.health);
+		//nameMesh.text = card.name;
+		//damageMesh.text = ("" + card.damage);
+		//healthMesh.text = ("" + card.health);
 
 	}
 

@@ -5,11 +5,13 @@ using UnityEngine;
 public class DoorController : MonoBehaviour {
 
 	public BoxCollider2D collider;
+	public SpriteRenderer sprite;
 	bool doorOpened = false;
 
 	// Use this for initialization
 	void Start () {
 		collider = GetComponent<BoxCollider2D> ();
+		sprite = GetComponent<SpriteRenderer> ();
 		
 	}
 	
@@ -23,8 +25,10 @@ public class DoorController : MonoBehaviour {
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
-		if (doorOpened) {
+		if (doorOpened && other.name == "Player") {
 			collider.isTrigger = false;
+			sprite.color = new Color (0, 255, 255);
+
 		}
 
 

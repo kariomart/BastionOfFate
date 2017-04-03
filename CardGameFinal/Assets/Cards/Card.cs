@@ -10,7 +10,8 @@ public class Card {
 	public int damage = 1;
 	public string name;
 	public SpriteRenderer cardBase;
-
+	public string description = "default";
+	public Color color = new Color (Random.Range (0.0f, 1.0f), Random.Range (0.0f, 1.0f), Random.Range (0.0f, 1.0f), 1);
 
 	// public string state = "inHand";
 	public bool inPlay = false;
@@ -42,6 +43,9 @@ public class Card {
 		isEnemyCard = crd.isEnemyCard;
 		selected = crd.selected;
 		dead = crd.dead;
+		description = crd.description;
+		color = crd.color;
+
 
 		a1_winsTies = crd.a1_winsTies;
 		a2_reduceRoll = crd.a2_reduceRoll;

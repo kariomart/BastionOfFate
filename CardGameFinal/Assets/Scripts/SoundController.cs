@@ -6,12 +6,14 @@ public class SoundController : MonoBehaviour {
 
 	public static SoundController me;
 	public GameObject audSource;
-	AudioSource[] audSources;
+	public AudioSource[] audSources;
 
 	// Use this for initialization
 	void Awake(){
 		me = this;
 	}
+
+
 	void Start () {
 		audSources = new AudioSource[32];
 
@@ -21,10 +23,20 @@ public class SoundController : MonoBehaviour {
 		}
 
 	}
+		
+	public static SoundController Get() {
+		if (me == null) {
+			me = (SoundController)FindObjectOfType(typeof(SoundController));
+		}
+
+		return me;
+	}
+
 
 	public void PlaySound(AudioClip snd, float vol)
 
 	{
+		Debug.Log (snd);
 		int sNum = GetSourceNum ();
 		audSources [sNum].clip = snd;
 		audSources [sNum].volume = vol;

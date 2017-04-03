@@ -17,6 +17,9 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public List<string> abilities = new List<string> ();
 	public int CardsInPlay;
 	public TextMesh console;
+	public bool inCardGame = false;
+	public bool isCardCurrentlyDisplayed = false;
+	public GameObject cardCurrentlyDisplayed;
 
 	public GameObject cardGameRunner; 
 	public GameObject overworld;
@@ -32,8 +35,14 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public GameObject wall;
 	public GameObject apple;
 	public GameObject player;
+	public GameObject cardInfo;
 	public Camera playerCam;
 	public Camera cardCam;
+
+	public AudioSource backgroundMusic;
+	public AudioClip overworldMusic;
+	public AudioClip battleMusic;
+
 
 	public Global Get() {
 		if (me == null) {
@@ -94,8 +103,11 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	void Awake() {
 		Debug.Log ("GLOBAL AWAKE");
-		Debug.Log ("PLAYER HEALTH: " + playerHealth);
-
+//		Debug.Log ("PLAYER HEALTH: " + playerHealth);
+//		Debug.Log (overworldMusic);
+//		Debug.Log (battleMusic);
+//		Debug.Log (SoundController.me);
+		//SoundController.me.PlaySound (overworldMusic, 2f);
 
 		CheckWinCondition ();
 
@@ -181,11 +193,45 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	public void RunCardGame() {
 		Debug.Log ("CARD GAME RUNNING");
+		backgroundMusic.Pause ();
+		backgroundMusic.clip = battleMusic;
+		backgroundMusic.Play ();
 		// Debug.Log (cardGameRunner);
 		playerCam.gameObject.SetActive(false);
 		cardCam.gameObject.SetActive(true);
 		cardGameRunner.SetActive (true);
+		inCardGame = true;
 		//overworld.gameObject.SetActive (false);
+
+	}
+
+	public void DisplayCardInfo(Card card) {
+
+		if (!isCardCurrentlyDisplayed) {
+			
+			GameObject display = Instantiate (cardInfo, new Vector3 (45, 2, 0), Quaternion.identity);
+			TextMesh name = display.transform.FindChild ("name").GetComponent<TextMesh> ();
+			//textMesh name = n.GetComponent<TextMesh> ();
+
+			TextMesh health = display.transform.FindChild ("health").GetComponent<TextMesh> ();
+			//textMesh health = h.GetComponent<TextMesh> ();
+
+			TextMesh description = display.transform.FindChild ("description").GetComponent<TextMesh> ();
+			//textMesh description = d.GetComponent<TextMesh> ();
+
+			name.text = card.name;
+			health.text = "" + card.health;
+			description.text = card.description;
+			isCardCurrentlyDisplayed = true;
+			cardCurrentlyDisplayed = display;
+
+		}
+	}
+
+	public void RemoveCardInfo() {
+
+		Destroy (cardCurrentlyDisplayed);
+		isCardCurrentlyDisplayed = false;
 
 	}
 
@@ -227,7 +273,9 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	// Use this for initialization
 	void Start () {
-
+		//SoundController.me.PlaySound (overworldMusic, 2f);
+		backgroundMusic.clip = overworldMusic;
+		backgroundMusic.Play ();
 	}
 		
 
