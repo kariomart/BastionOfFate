@@ -20,6 +20,7 @@ public class BattleChest : MonoBehaviour {
 		rigid = GetComponent<Rigidbody2D> ();
 		sprite = GetComponent<SpriteRenderer> ();
 
+
 		for(int i = 0; i < Random.Range(2, 4); i++){
 			Card ca = Global.me.GetRandomCard ();
 			enemies.Add(ca);

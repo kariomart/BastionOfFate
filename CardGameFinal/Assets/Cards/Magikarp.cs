@@ -8,6 +8,7 @@ public class Magikarp : Card {
 		name = "Magikarp";
 		health = 5;
 		damage = 0;
+		description = "does nothing unless you get lucky";
 	}
 
 	public override int RollDie ()

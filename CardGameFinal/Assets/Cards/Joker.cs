@@ -8,6 +8,7 @@ public class Joker : Card {
 		name = "Joker";
 		health = 2;
 		damage = 3;
+		description = "this card is so fucking troll man";
 	}
 
 	public override int RollDie ()

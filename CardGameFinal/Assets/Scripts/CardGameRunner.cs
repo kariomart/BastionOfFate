@@ -14,12 +14,12 @@ public class CardGameRunner : MonoBehaviour {
 	public bool cardCurrentlySelected = false;
 	public Card cardSelected;
 	public bool inBattle = false;
+
 	public int enemiesDead = 0;
 	public int cardsInPlay = 0;
 	public int cardsThatHaveAttacked = 0;
 	public int friendliesDead = 0;
 	public int dmg;
-	public int cardsInHand = 0;
 
 	public GameObject cardGamePlayer;
 
@@ -36,7 +36,6 @@ public class CardGameRunner : MonoBehaviour {
 		//Debug.Log ("on enable");
 		SetupGame ();
 		StartGame ();
-		PlayerTurn ();
 
 
 	}
@@ -56,9 +55,7 @@ public class CardGameRunner : MonoBehaviour {
 	public void SetupGame() 
 
 	{
-
-		// GameObject consoleObject = GameObject.Find ("Console");
-		// Global.me.console = consoleObject.GetComponent<TextMesh> ();
+		
 		inBattle = true;
 		Debug.Log (enemies + " setup game");
 		inventory = Global.me.inventory;
@@ -120,6 +117,7 @@ public class CardGameRunner : MonoBehaviour {
 
 	}
 
+
 	public void Combat(Card enemy) 
 
 	{
@@ -158,6 +156,8 @@ public class CardGameRunner : MonoBehaviour {
 
 		}
 
+
+
 	public void DeathTests() 
 
 	{
@@ -180,7 +180,6 @@ public class CardGameRunner : MonoBehaviour {
 			Debug.Log ("all enemies dead");
 			GiveReward ();
 			EndCardGame();
-			inBattle = false;
 
 			}
 
@@ -270,6 +269,7 @@ public class CardGameRunner : MonoBehaviour {
 		
 					
 	public void EndCardGame() {
+		
 		Debug.Log ("LATER");
 		Global.me.backgroundMusic.clip = Global.me.overworldMusic;
 		Global.me.backgroundMusic.Play ();
@@ -277,7 +277,7 @@ public class CardGameRunner : MonoBehaviour {
 		Global.me.playerCam.gameObject.SetActive (true);
 		Global.me.inventory = inventory;
 		Global.me.inCardGame = false;
-		//UnityEngine.SceneManagement.SceneManager.LoadScene("basic_level");
+		inBattle = false;
 
 	}
 
@@ -289,35 +289,24 @@ public class CardGameRunner : MonoBehaviour {
 	}
 
 
-	public void CardClicked(Card card) {
+	public void CardClicked(Card card, Vector2 position) {
 
-//		if (!card.inPlay && !card.isEnemyCard) {
-//			cardsInPlay++;
-//		}
-			
 
 		if (!card.isEnemyCard) {
-//			Global.me.console.text = ("You have selected " + card.name);
 			Debug.Log ("You have selected " + card.name);
 			cardCurrentlySelected = true;
+			ParticleSystem cardGamePlayerParticles = cardGamePlayer.GetComponent<ParticleSystem> ();
 			cardSelected = card; 
+
+			ParticleSystem.MainModule settings = cardGamePlayerParticles.GetComponent<ParticleSystem>().main;
+			settings.startColor = new ParticleSystem.MinMaxGradient( cardSelected.color );
 		}
 			
 
 		if (card.isEnemyCard && cardCurrentlySelected ) {
 
-
-//			if (!cardSelected.hasAttacked) {
-				Combat (card);
-				//cardSelected.hasAttacked = true;
-				//cardsThatHaveAttacked++;
-//
-//
-//			} else
-//				Debug.Log ("this card has  attacked!");
-//				// Global.me.console.text =  ("this card has  attacked!");
-
-
+			Combat (card);
+			Global.me.PlayParticleEffect (Global.me.attackParticle, position, cardSelected.color);  
 
 		}
 
@@ -326,16 +315,10 @@ public class CardGameRunner : MonoBehaviour {
 
 
 	public void StartGame() {
-//		Global.me.console.text = ("PHASE 1: PLACE UP TO 3 CARDS ONTO THE BATTLEFIELD");
-
-	}
-
-	public void PlayerTurn() {
-		//Global.me.console.text = ("PHASE 2: YOUR TURN. CLICK ANY OF YOUR CARDS AND THEN AN ENEMY CARD TO ATTACK IT. CARDS CAN ONLY ATTACK ONCE PER TURN.");
-
 
 
 	}
+
 
 
 }

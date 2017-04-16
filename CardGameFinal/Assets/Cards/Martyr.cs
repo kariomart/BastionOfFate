@@ -8,6 +8,7 @@ public class Martyr : Card {
 		name = "The Martyr";
 		health = 10;
 		damage = 10;
+		description = "if The Martyr rolls 6\n, deals 10 damage.\n Otherwise it dies.";
 	}
 
 	public override int RollDie ()

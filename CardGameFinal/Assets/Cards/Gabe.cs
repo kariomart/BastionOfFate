@@ -7,6 +7,7 @@ public class Gabe : Card {
 	public  Gabe() {
 		name = "The Gabe";
 		health = 5;
+		description = "you damned fool!";
 	}
 
 	public override int RollDie ()

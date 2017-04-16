@@ -7,6 +7,7 @@ public class General : Card {
 	public  General() {
 		name = "The General";
 		health = 5; 
+		description = "vanilla 5 health 1 damage";
 	}
 
 

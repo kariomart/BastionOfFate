@@ -35,3 +35,4 @@
 /Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/Mono.Cecil.Mdb.dll
 /Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll
 /Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.xml
+/Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/UnityEditor.WindowsStandalone.Extensions.dll

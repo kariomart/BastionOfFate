@@ -7,6 +7,7 @@ public class Armadillo : Card {
 	public  Armadillo() {
 		name = "The Armadillo";
 		health = 8; 
+		description = "If The Armadillo rolls\n an even number his roll\n is set to 3 and he gains 1 health.";
 	}
 
 	public override int RollDie () {

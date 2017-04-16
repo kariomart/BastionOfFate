@@ -7,6 +7,7 @@ public class Zombie : Card {
 	public  Zombie() {
 		name = "Zombie";
 		health = 10; 
+		description = "if this card rolls 6 it dies";
 	}
 
 	public override int RollDie () {

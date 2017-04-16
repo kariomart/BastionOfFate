@@ -8,6 +8,7 @@ public class Paladin : Card {
 		name = "The Paladin";
 		health = 4;
 		damage = 1;
+		description = "this card is honestly busted \nyou don't really need to know what it does";
 	}
 
 	public override int RollDie ()

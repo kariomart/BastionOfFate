@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+// godbless you connor lofdahl for making me some sweet tunes.
 
 public class Global : MonoBehaviourSingleton <Global> {
 
-	public int playerHealth = 2;
 
 	public static Global me;
 //	public PanelController battlefieldPanel;
@@ -20,6 +20,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public bool inCardGame = false;
 	public bool isCardCurrentlyDisplayed = false;
 	public GameObject cardCurrentlyDisplayed;
+	public GameObject attackParticle;
 
 	public GameObject cardGameRunner; 
 	public GameObject overworld;
@@ -36,8 +37,11 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public GameObject apple;
 	public GameObject player;
 	public GameObject cardInfo;
+	public GameObject cardGamePlayer;
 	public Camera playerCam;
 	public Camera cardCam;
+	public Screenshake screenshaker;
+	public AudioClip bam;
 
 	public AudioSource backgroundMusic;
 	public AudioClip overworldMusic;
@@ -128,9 +132,12 @@ public class Global : MonoBehaviourSingleton <Global> {
 		wall = GameObject.Find ("wall");
 		apple = GameObject.Find ("apple");
 		player = GameObject.Find ("Player");
+		cardGamePlayer = GameObject.Find ("CardGamePlayer");
 
 		GameObject p = player.transform.GetChild (0).gameObject;
 		playerCam = p.GetComponent<Camera> ();
+		screenshaker = cardCam.GetComponent<Screenshake> ();
+
 
 		//GameObject c = GameObject.Find ("CardCamera");
 		// cardCam = c.GetComponent<Camera> ();
@@ -205,6 +212,27 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	}
 
+	public void PlayParticleEffect(GameObject particleObj, Vector2 destination, Color color) {
+
+		SoundController.me.PlaySound (bam, 10f);
+		ParticleSystem particle = particleObj.GetComponent<ParticleSystem> ();
+		ParticleController particleController = particleObj.GetComponent<ParticleController> ();
+		ParticleSystem.MainModule settings = particle.GetComponent<ParticleSystem>().main;
+		settings.startColor = new ParticleSystem.MinMaxGradient( color );
+
+
+		particle.Play ();
+		particleController.StartLerping (destination);
+	}
+
+
+	public void ShakeScreen (float magnitude, float duration) {
+
+		screenshaker.SetScreenshake (magnitude, duration);
+	}
+
+
+
 	public void DisplayCardInfo(Card card) {
 
 		if (!isCardCurrentlyDisplayed) {
@@ -228,48 +256,14 @@ public class Global : MonoBehaviourSingleton <Global> {
 		}
 	}
 
+
 	public void RemoveCardInfo() {
 
 		Destroy (cardCurrentlyDisplayed);
 		isCardCurrentlyDisplayed = false;
 
 	}
-
-
-
-
-//
-//	public void GenerateOverworld() {
-//		int bounds = 30; 
-//		for (int i = 0; i < Random.Range (5, 10); i++) 
-//		{
-//			Instantiate (chest, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
-//		}
-//
-//		for (int i = 0; i < Random.Range (5, 10); i++) 
-//		{
-//			Instantiate (battleChest, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
-//		}
-//
-//		for (int i = 0; i < Random.Range (50, 60); i += 1) 
-//		{
-//			Instantiate (wall, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
-//			Instantiate (wall, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.Euler (0, 0, 90));
-//
-//			}
-//
-//		for (int i = 0; i < Random.Range (5, 10); i += 1) 
-//		{
-//			Instantiate (apple, new Vector2 (Random.Range (-bounds, bounds), (Random.Range (-bounds, bounds))), Quaternion.identity);
-//		}
-//
-//	}
-//		
-//
-//
-//
-//
-
+		
 
 	// Use this for initialization
 	void Start () {
