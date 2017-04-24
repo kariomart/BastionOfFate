@@ -48,6 +48,7 @@ public class BattleChest : MonoBehaviour {
 			if (Global.me.inCardGame == false) {
 				Global.me.CurrentBattle (enemies);
 				Global.me.RunCardGame ();
+				//Destroy (this.gameObject);
 			}
 		}
 

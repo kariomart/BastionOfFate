@@ -44,7 +44,7 @@ public class ChestController : MonoBehaviour {
 		if (chestOpen && !abilityChosen) {
 			
 			if ((Input.GetKeyDown (KeyCode.Alpha1))) {
-				Debug.Log ("ability 1 is chosen");
+//				Debug.Log ("ability 1 is chosen");
 				loot.a1_winsTies = true;
 				abilityChosen = true;
 				Destroy (n);
@@ -52,14 +52,14 @@ public class ChestController : MonoBehaviour {
 			}
 
 			if ((Input.GetKeyDown (KeyCode.Alpha2))) {
-				Debug.Log ("ability 2 is chosen");
+			//	Debug.Log ("ability 2 is chosen");
 				loot.a2_reduceRoll = true;
 				abilityChosen = true;
 				Destroy (n);
 			}
 
 			if ((Input.GetKeyDown (KeyCode.Alpha3))) {
-				Debug.Log ("ability 3 is chosen");
+			//	Debug.Log ("ability 3 is chosen");
 				loot.a3_heal = true;
 				abilityChosen = true;
 				Destroy (n);
@@ -91,7 +91,7 @@ public class ChestController : MonoBehaviour {
 			string a3 = abilityStrings [2];
 			nct.text = ("You've obtained " + loot.name + "!" + "\n\nWhat ability do you want? These are the options:\n1. " + a1 + "\n2. " + a2 + "\n3. " + a3);
 
-			Debug.Log (SoundController.me);
+//			Debug.Log (SoundController.me);
 			SoundController.me.PlaySound (chestOpenSound, 10f);
 			chestOpen = true;
 		}

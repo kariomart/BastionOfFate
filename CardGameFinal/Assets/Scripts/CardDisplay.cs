@@ -101,7 +101,7 @@ public class CardDisplay : MonoBehaviour {
 
 
 	public void OnMouseDown() {
-		game.CardClicked (card, this.transform.position);
+		game.CardClicked (card, this.transform);
 
 		if (card.inPlay == false && !card.isEnemyCard && game.cardsInPlay < 4) {
 		card.inPlay = true;

@@ -36,7 +36,7 @@ public class SoundController : MonoBehaviour {
 	public void PlaySound(AudioClip snd, float vol)
 
 	{
-		Debug.Log (snd);
+//		Debug.Log (snd);
 		int sNum = GetSourceNum ();
 		audSources [sNum].clip = snd;
 		audSources [sNum].volume = vol;

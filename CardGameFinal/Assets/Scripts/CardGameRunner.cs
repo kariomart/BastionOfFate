@@ -10,6 +10,7 @@ public class CardGameRunner : MonoBehaviour {
 
 	List<Card> inventory;
 	List<Card> enemies;
+	List<CardDisplayNew> displays = new List<CardDisplayNew>();
 
 	public bool cardCurrentlySelected = false;
 	public Card cardSelected;
@@ -22,21 +23,20 @@ public class CardGameRunner : MonoBehaviour {
 	public int dmg;
 
 	public GameObject cardGamePlayer;
+	public TextMesh selectedText;
+
 
 	void Awake() {
 		Global.me.cardGameRunner = this.gameObject;
 	//	gameObject.SetActive (false);
-
-
 	}
+
 
 	// Use this for initialization
 	void OnEnable () {
 
-		//Debug.Log ("on enable");
+		Debug.Log ("on enable");
 		SetupGame ();
-		StartGame ();
-
 
 	}
 		
@@ -47,6 +47,8 @@ public class CardGameRunner : MonoBehaviour {
 		CheckKeys ();
 		DeathTests ();
 		RemoveDeadCards ();
+		UpdateText ();
+
 
 	}
 
@@ -57,13 +59,20 @@ public class CardGameRunner : MonoBehaviour {
 	{
 		
 		inBattle = true;
-		Debug.Log (enemies + " setup game");
+
+
+
 		inventory = Global.me.inventory;
 		enemies = Global.me.enemiesTransfer;
 		cardGamePlayer = GameObject.Find ("CardGamePlayer");
+		selectedText = GameObject.Find ("selectedText").GetComponent<TextMesh>();
 
 		enemiesDead = 0;
 		int count = 0;
+
+		foreach (Card ca in enemies) {
+			Debug.Log (ca.name);
+		}
 	
 
 		foreach (Card ca in inventory) 
@@ -72,6 +81,8 @@ public class CardGameRunner : MonoBehaviour {
 				ca.inPlay = false;
 				GameObject bloop = Instantiate (cardBase, new Vector3 (41 + (2 * count), -3, 0), Quaternion.identity);
 				CardDisplayNew display = bloop.GetComponent<CardDisplayNew> ();
+				displays.Add (display);
+				ca.display = display;
 				display.card = ca;
 				//display.ChangeName ();
 				count += 1;
@@ -81,11 +92,12 @@ public class CardGameRunner : MonoBehaviour {
 		count = 0;
 		foreach (Card car in enemies) 
 		{
-			GameObject blooop = Instantiate (cardBase, new Vector3 (51 + (2 * count), 2, 0), Quaternion.identity);
+			GameObject blooop = Instantiate (cardBase, new Vector3 (cardGamePlayer.transform.position.x + (2 * count), 3.5f, 0), Quaternion.identity);
 			CardDisplayNew display = blooop.GetComponent<CardDisplayNew> ();
 			SpriteRenderer displaySprite = blooop.GetComponent<SpriteRenderer> ();
 
 			displaySprite.color = new Color (255, 0, 0);
+			displays.Add (display);
 			display.card = car;
 			//display.ChangeName ();
 			car.isEnemyCard = true;
@@ -114,6 +126,24 @@ public class CardGameRunner : MonoBehaviour {
 		}
 		cardsThatHaveAttacked = 0;
 
+
+	}
+
+	public void Wisp() {
+		if (cardSelected != null) {
+			Global.me.PlayParticleEffect (Global.me.wispParticle, cardSelected.display.transform, cardSelected.color); 
+		}
+
+
+
+	}
+
+	public void UpdateText() {
+
+		if (cardCurrentlySelected && cardSelected != null && inBattle) {
+			selectedText.text = cardSelected.name + "\n" + "damage: " + cardSelected.damage + "\n" + "health: " + cardSelected.health;
+
+		}
 
 	}
 
@@ -158,14 +188,16 @@ public class CardGameRunner : MonoBehaviour {
 
 
 
-	public void DeathTests() 
+	public void DeathTests() {
 
-	{
+		if (inBattle) {
 
-		foreach (Card ca in inventory) {
-			if (ca.health < 1) {
-				ca.dead = true;
-
+			foreach (Card ca in inventory) {
+//				Debug.Log (ca.name);
+				if (ca.health < 1) {
+					ca.dead = true;
+					cardSelected = null;
+				}
 			}
 
 			foreach (Card em in enemies) {
@@ -173,7 +205,10 @@ public class CardGameRunner : MonoBehaviour {
 					em.dead = true;
 
 				}
+			}
+
 		}
+	
 			
 //		Debug.Log (enemies + " Death Tests");
 			if (enemiesDead == enemies.Count && inBattle) {
@@ -190,7 +225,6 @@ public class CardGameRunner : MonoBehaviour {
 			}
 
 		}
-	}
 
 
 	public void RemoveDeadCards() 
@@ -271,15 +305,30 @@ public class CardGameRunner : MonoBehaviour {
 	public void EndCardGame() {
 		
 		Debug.Log ("LATER");
+		ClearObjects ();
 		Global.me.backgroundMusic.clip = Global.me.overworldMusic;
 		Global.me.backgroundMusic.Play ();
+		selectedText.text = " ";
 		Global.me.cardCam.gameObject.SetActive (false);
 		Global.me.playerCam.gameObject.SetActive (true);
+		this.gameObject.SetActive (false);
 		Global.me.inventory = inventory;
 		Global.me.inCardGame = false;
 		inBattle = false;
 
+
 	}
+
+	public void ClearObjects() {
+
+		foreach (CardDisplayNew display in displays) {
+			Debug.Log (display.card.name);
+
+			if (display != null) 
+				Destroy (display.gameObject);
+		}
+	}
+
 
 	public void GiveReward() {
 		Card loot = Global.me.GetRandomCard ();
@@ -289,7 +338,7 @@ public class CardGameRunner : MonoBehaviour {
 	}
 
 
-	public void CardClicked(Card card, Vector2 position) {
+	public void CardClicked(Card card, Transform position) {
 
 
 		if (!card.isEnemyCard) {
@@ -300,23 +349,19 @@ public class CardGameRunner : MonoBehaviour {
 
 			ParticleSystem.MainModule settings = cardGamePlayerParticles.GetComponent<ParticleSystem>().main;
 			settings.startColor = new ParticleSystem.MinMaxGradient( cardSelected.color );
+
+
 		}
 			
 
-		if (card.isEnemyCard && cardCurrentlySelected ) {
+		if (card.isEnemyCard && cardSelected != null) {
 
 			Combat (card);
-			Global.me.PlayParticleEffect (Global.me.attackParticle, position, cardSelected.color);  
+			Global.me.PlayParticleEffect (position, cardSelected.color);  
 
 		}
 
 	
-	}
-
-
-	public void StartGame() {
-
-
 	}
 
 

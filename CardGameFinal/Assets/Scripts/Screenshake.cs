@@ -33,7 +33,7 @@ public class Screenshake : MonoBehaviour {
 	public void SetScreenshake(float magnitude, float duration, Vector3 direction) {
 		thisMagnitude = magnitude;
 		screenshakeTimer = duration;
-		weightedDirection = weightedDirection;
+		weightedDirection = direction;
 
 	}
 

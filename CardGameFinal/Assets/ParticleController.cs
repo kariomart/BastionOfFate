@@ -14,16 +14,17 @@ public class ParticleController : MonoBehaviour {
 	private Vector3 _startPosition;
 	private Vector3 _endPosition;
 	private float _timeStartedLerping;
+	Transform boop;
 
 
-
-	public void StartLerping(Vector2 destination)
+	public void StartLerping(Transform destination)
 	{
 		_isLerping = true;
 		_timeStartedLerping = Time.time;
 
 		_startPosition = transform.position;
-		_endPosition = destination;
+		_endPosition = destination.position;
+		//boop = destination;
 	}
 
 
@@ -39,9 +40,10 @@ public class ParticleController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-
+		
 		if(_isLerping)
 		{
+			//_endPosition = boop.position;
 			float timeSinceStarted = Time.time - _timeStartedLerping;
 			float percentageComplete = timeSinceStarted / timeTakenDuringLerp;
 

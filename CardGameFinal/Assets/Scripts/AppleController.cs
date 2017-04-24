@@ -20,7 +20,6 @@ public class AppleController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		Global.me.playerHealth += Random.Range (1, 3);
 		Destroy (gameObject);
 
 

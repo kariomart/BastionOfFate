@@ -14,13 +14,13 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public List<Card> inventory;
 	public List<Card> cards;
 	public List<Card> enemiesTransfer = new List<Card>();
+
 	public List<string> abilities = new List<string> ();
 	public int CardsInPlay;
 	public TextMesh console;
 	public bool inCardGame = false;
 	public bool isCardCurrentlyDisplayed = false;
 	public GameObject cardCurrentlyDisplayed;
-	public GameObject attackParticle;
 
 	public GameObject cardGameRunner; 
 	public GameObject overworld;
@@ -38,6 +38,8 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public GameObject player;
 	public GameObject cardInfo;
 	public GameObject cardGamePlayer;
+	public GameObject particleObject;
+	public GameObject wispParticle;
 	public Camera playerCam;
 	public Camera cardCam;
 	public Screenshake screenshaker;
@@ -115,9 +117,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 		CheckWinCondition ();
 
-		if (playerHealth < 1) {
-			Application.LoadLevel (Application.loadedLevel);
-		}
+		// Application.LoadLevel (Application.loadedLevel);
 
 
 		if (me != null)
@@ -212,18 +212,35 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	}
 
-	public void PlayParticleEffect(GameObject particleObj, Vector2 destination, Color color) {
+	public void PlayParticleEffect(Transform destination, Color color) {
 
 		SoundController.me.PlaySound (bam, 10f);
-		ParticleSystem particle = particleObj.GetComponent<ParticleSystem> ();
-		ParticleController particleController = particleObj.GetComponent<ParticleController> ();
+		GameObject partObj = Instantiate (particleObject, cardGamePlayer.transform.position, Quaternion.identity);
+		ParticleSystem particle = partObj.GetComponent<ParticleSystem> ();
+		ParticleController particleController = partObj.GetComponent<ParticleController> ();
 		ParticleSystem.MainModule settings = particle.GetComponent<ParticleSystem>().main;
 		settings.startColor = new ParticleSystem.MinMaxGradient( color );
+	
+
+		particle.Play ();
+		particleController.StartLerping (destination);
+	}
+
+	public void PlayParticleEffect(GameObject particleSystem, Transform destination, Color color) {
+
+		//SoundController.me.PlaySound (bam, 10f);
+		GameObject partObj = Instantiate (particleSystem, cardGamePlayer.transform.position, Quaternion.identity);
+		ParticleSystem particle = partObj.GetComponent<ParticleSystem> ();
+		ParticleController particleController = partObj.GetComponent<ParticleController> ();
+		ParticleSystem.MainModule settings = particle.GetComponent<ParticleSystem>().main;
+		settings.startColor = new ParticleSystem.MinMaxGradient(color);
 
 
 		particle.Play ();
 		particleController.StartLerping (destination);
 	}
+
+
 
 
 	public void ShakeScreen (float magnitude, float duration) {

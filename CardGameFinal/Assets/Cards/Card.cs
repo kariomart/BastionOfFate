@@ -29,6 +29,7 @@ public class Card {
 	public bool a4_doubleDamageBothWays = false;
 	public bool a5_killingBlow = false;
 	public bool a6_dealRollTakeRoll = false;
+	public CardDisplayNew display;
 
 
 	public Card() {
