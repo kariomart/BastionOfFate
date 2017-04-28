@@ -212,7 +212,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	}
 
-	public void PlayParticleEffect(Transform destination, Color color) {
+	public void PlayParticleEffect(Vector2 destination, Color color) {
 
 		SoundController.me.PlaySound (bam, 10f);
 		GameObject partObj = Instantiate (particleObject, cardGamePlayer.transform.position, Quaternion.identity);
@@ -226,7 +226,21 @@ public class Global : MonoBehaviourSingleton <Global> {
 		particleController.StartLerping (destination);
 	}
 
-	public void PlayParticleEffect(GameObject particleSystem, Transform destination, Color color) {
+	public void PlayParticleEffect(Vector2 origin, Vector2 destination, Color color) {
+
+		SoundController.me.PlaySound (bam, 10f);
+		GameObject partObj = Instantiate (particleObject, origin, Quaternion.identity);
+		ParticleSystem particle = partObj.GetComponent<ParticleSystem> ();
+		ParticleController particleController = partObj.GetComponent<ParticleController> ();
+		ParticleSystem.MainModule settings = particle.GetComponent<ParticleSystem>().main;
+		settings.startColor = new ParticleSystem.MinMaxGradient( color );
+
+
+		particle.Play ();
+		particleController.StartLerping (destination);
+	}
+
+	public void PlayParticleEffect(GameObject particleSystem, Vector2 destination, Color color) {
 
 		//SoundController.me.PlaySound (bam, 10f);
 		GameObject partObj = Instantiate (particleSystem, cardGamePlayer.transform.position, Quaternion.identity);

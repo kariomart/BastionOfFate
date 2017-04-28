@@ -9,12 +9,14 @@ public class CardGameRunner : MonoBehaviour {
 	public GameObject cardBase;
 
 	List<Card> inventory;
-	List<Card> enemies;
+	public List<Card> enemies;
 	List<CardDisplayNew> displays = new List<CardDisplayNew>();
 
 	public bool cardCurrentlySelected = false;
 	public Card cardSelected;
 	public bool inBattle = false;
+	public bool postScreen = false;
+	public bool accepted = false;
 
 	public int enemiesDead = 0;
 	public int cardsInPlay = 0;
@@ -23,7 +25,14 @@ public class CardGameRunner : MonoBehaviour {
 	public int dmg;
 
 	public GameObject cardGamePlayer;
+	public GameObject notification;
+	public GameObject notificationInstance;
+	public GameObject explosion; 
+
 	public TextMesh selectedText;
+	public TextMesh gameInfo;
+	public TextMesh enemyRollText;
+	public TextMesh playerRollText;
 
 
 	void Awake() {
@@ -66,6 +75,8 @@ public class CardGameRunner : MonoBehaviour {
 		enemies = Global.me.enemiesTransfer;
 		cardGamePlayer = GameObject.Find ("CardGamePlayer");
 		selectedText = GameObject.Find ("selectedText").GetComponent<TextMesh>();
+		gameInfo = GameObject.Find ("GameInfo").GetComponent<TextMesh> ();
+
 
 		enemiesDead = 0;
 		int count = 0;
@@ -83,6 +94,7 @@ public class CardGameRunner : MonoBehaviour {
 				CardDisplayNew display = bloop.GetComponent<CardDisplayNew> ();
 				displays.Add (display);
 				ca.display = display;
+				ca.display.orbitRadii = (1 + (1.15f * count));
 				display.card = ca;
 				//display.ChangeName ();
 				count += 1;
@@ -98,8 +110,8 @@ public class CardGameRunner : MonoBehaviour {
 
 			displaySprite.color = new Color (255, 0, 0);
 			displays.Add (display);
+			car.display = display;
 			display.card = car;
-			//display.ChangeName ();
 			car.isEnemyCard = true;
 
 			count += 1;
@@ -129,14 +141,7 @@ public class CardGameRunner : MonoBehaviour {
 
 	}
 
-	public void Wisp() {
-		if (cardSelected != null) {
-			Global.me.PlayParticleEffect (Global.me.wispParticle, cardSelected.display.transform, cardSelected.color); 
-		}
 
-
-
-	}
 
 	public void UpdateText() {
 
@@ -144,6 +149,11 @@ public class CardGameRunner : MonoBehaviour {
 			selectedText.text = cardSelected.name + "\n" + "damage: " + cardSelected.damage + "\n" + "health: " + cardSelected.health;
 
 		}
+
+	}
+
+	public void UpdateBattleInfo(string info) {
+		//gameInfo.text = info;
 
 	}
 
@@ -155,18 +165,28 @@ public class CardGameRunner : MonoBehaviour {
 		int playerRoll = cardSelected.RollDie ();
 		int enemyRoll = enemy.RollDie ();
 
+		playerRollText.text = "" + playerRoll;
+		enemyRollText.text = "" + enemyRoll;
+
 		if (cardSelected.a2_reduceRoll)
 			enemyRoll --;
-		
-		Debug.Log(cardSelected.name + " has rolled " + playerRoll + ". " + enemy.name + " has rolled " + enemyRoll);
+
+		string roll = cardSelected.name + " has rolled " + playerRoll + ". \n" + enemy.name + " has rolled " + enemyRoll;
+
+		Debug.Log (roll);
+		UpdateBattleInfo (roll);
+
 
 		if (playerRoll > enemyRoll) {
+			Global.me.PlayParticleEffect (enemy.display.transform.position, cardSelected.color);  
 			enemy.TakeDamage (cardSelected.damage);
 			Debug.Log (cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name);
+
 			//Global.me.console.text = cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name;
 		}
 		
 		if (enemyRoll > playerRoll) {
+			Global.me.PlayParticleEffect (enemy.display.transform.position, cardGamePlayer.transform.position, enemy.color);  
 			cardSelected.TakeDamage (enemy.damage);
 			Debug.Log (enemy.name + " has dealt " + enemy.damage + " to the " + cardSelected.name);
 			//Global.me.console.text = enemy.name + " has dealt " + enemy.damage + " to the " + cardSelected.name;
@@ -174,6 +194,7 @@ public class CardGameRunner : MonoBehaviour {
 
 		if (enemyRoll == playerRoll)
 		if (cardSelected.a1_winsTies) {
+			TieParticleEffect (enemy);
 			cardSelected.WinTies ();
 			enemy.TakeDamage (cardSelected.damage);
 			Debug.Log (cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name);
@@ -186,6 +207,23 @@ public class CardGameRunner : MonoBehaviour {
 
 		}
 
+
+	void TieParticleEffect(Card enemy) {
+
+		Vector2 enemyPos = enemy.display.transform.position;
+		Vector2 playerPos = cardGamePlayer.transform.position;
+		Vector2 midpoint = playerPos + ((enemyPos - playerPos) * 0.5f);
+
+		Global.me.PlayParticleEffect (enemy.display.transform.position, midpoint, enemy.color);  
+		Global.me.PlayParticleEffect (cardGamePlayer.transform.position, midpoint, cardSelected.color);
+
+
+		//Instantiate (explosion, midpoint, Quaternion.identity);
+
+
+
+
+	}
 
 
 	public void DeathTests() {
@@ -208,12 +246,12 @@ public class CardGameRunner : MonoBehaviour {
 			}
 
 		}
+
 	
 			
 //		Debug.Log (enemies + " Death Tests");
 			if (enemiesDead == enemies.Count && inBattle) {
 			Debug.Log ("all enemies dead");
-			GiveReward ();
 			EndCardGame();
 
 			}
@@ -265,6 +303,47 @@ public class CardGameRunner : MonoBehaviour {
 
 	}
 
+	public void DisplayHUD() {
+		//Debug.Log ("HUD DISPLAYED");
+
+		foreach (Card ca in inventory) 
+
+		{
+			//Debug.Log (ca.display);
+			ca.display.DisplayExtraInfo ();
+			
+		}
+
+
+		foreach (Card ca in enemies) 
+		
+		{
+			ca.display.DisplayExtraInfo ();
+
+		}
+			
+	}
+
+	public void RemoveHUD() {
+		//Debug.Log ("HUD DISPLAYED");
+
+		foreach (Card ca in inventory) 
+
+		{
+			ca.display.RemoveExtraInfo ();
+
+		}
+
+
+		foreach (Card ca in enemies) {
+
+		
+				ca.display.RemoveExtraInfo ();
+		}
+
+	}
+
+
 
 
 	public void CheckKeys() 
@@ -287,10 +366,12 @@ public class CardGameRunner : MonoBehaviour {
 		}
 
 
-		if (Input.GetKeyDown (KeyCode.E)) 
+		if (Input.GetKeyDown (KeyCode.Space) && postScreen) 
 		{
-			CycleTurn ();
+			Transition ();
 		}
+
+
 			
 
 	}
@@ -309,12 +390,33 @@ public class CardGameRunner : MonoBehaviour {
 		Global.me.backgroundMusic.clip = Global.me.overworldMusic;
 		Global.me.backgroundMusic.Play ();
 		selectedText.text = " ";
+		DisplayEndOfGame ();
+
+	}
+
+	public void DisplayEndOfGame() {
+		postScreen = true;
+		inBattle = false;
+
+		Card loot = Global.me.GetRandomCard ();
+
+		notificationInstance = Instantiate (notification, new Vector2(48.6f, 1.7f), Quaternion.identity);
+		TextMesh desc = notification.transform.FindChild ("desc").GetComponent<TextMesh>();
+		desc.text = "You have recieved " + loot.name + "!\nPress space to continue!";
+		inventory.Add (loot);
+
+				
+
+	}
+
+	public void Transition() {
+
+		Destroy (notificationInstance);
 		Global.me.cardCam.gameObject.SetActive (false);
 		Global.me.playerCam.gameObject.SetActive (true);
 		this.gameObject.SetActive (false);
 		Global.me.inventory = inventory;
 		Global.me.inCardGame = false;
-		inBattle = false;
 
 
 	}
@@ -327,14 +429,6 @@ public class CardGameRunner : MonoBehaviour {
 			if (display != null) 
 				Destroy (display.gameObject);
 		}
-	}
-
-
-	public void GiveReward() {
-		Card loot = Global.me.GetRandomCard ();
-		print ("You have been rewarded " + loot.name);
-		inventory.Add (loot);
-
 	}
 
 
@@ -357,7 +451,7 @@ public class CardGameRunner : MonoBehaviour {
 		if (card.isEnemyCard && cardSelected != null) {
 
 			Combat (card);
-			Global.me.PlayParticleEffect (position, cardSelected.color);  
+//			Global.me.PlayParticleEffect (position, cardSelected.color);  
 
 		}
 

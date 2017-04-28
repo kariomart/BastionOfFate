@@ -4,26 +4,29 @@ using UnityEngine;
 
 public class CardDisplayNew : MonoBehaviour {
 
-	//	public TextMesh nameMesh;
-	//	public TextMesh damageMesh;
-	//	public TextMesh healthMesh;
+
 	public CardGameRunner game;
 	public SpriteRenderer sprite;
+
 	public GameObject orbTextObj;
-	public TextMesh orbText;
 	public GameObject currentlyDisplayedText;
 
+	public TextMesh orbText;
+	public TextMesh extraInfo;
+	public TextMesh nameInfo;
+
 	public GameObject explosion;
+	public GameObject wisp;
+	public GameObject wispTemp;
 
 
-	//Vector2 originalPos;
 	public Card card;			
 	public Screenshake cam;
 	public float count = 0;
 	public bool hovering = false;
 	public bool isTextDisplayed = false;
 	public float orbitSpeed;
-	public float orbitRadi;
+	public float orbitRadii;
 
 
 
@@ -34,10 +37,11 @@ public class CardDisplayNew : MonoBehaviour {
 		sprite = GetComponent<SpriteRenderer> ();
 		GameObject g = GameObject.Find ("CardGame");
 		cam = GameObject.Find ("CardCamera").GetComponent<Screenshake>();
+		orbText = GameObject.Find ("OrbText").GetComponent<TextMesh> ();
 		game = g.GetComponent<CardGameRunner> ();
 
-		orbitSpeed = Random.Range(1f, 2f);
-		orbitRadi = Random.Range(2f, 4f);
+		orbitSpeed = Random.Range(1f, 1.3f);
+		//orbitRadi = Random.Range(2f, 4f);
 
 
 	}
@@ -45,7 +49,7 @@ public class CardDisplayNew : MonoBehaviour {
 	void Orbit() {
 		
 		Vector2 orbitPos = game.cardGamePlayer.transform.position;
-		transform.position = orbitPos + (MagicSpells.ToVect((MagicSpells.ToAng(orbitPos, transform.position) + orbitSpeed)) * orbitRadi);
+		transform.position = orbitPos + (MagicSpells.ToVect((MagicSpells.ToAng(orbitPos, transform.position) + orbitSpeed)) * orbitRadii);
 
 	}
 		
@@ -62,6 +66,18 @@ public class CardDisplayNew : MonoBehaviour {
 
 	}
 
+	public void DisplayExtraInfo() {
+		extraInfo.text = card.damage + "D\n" + card.health + "H";
+		nameInfo.text = card.name;
+
+	}
+
+	public void RemoveExtraInfo() {
+		extraInfo.text = "";
+		nameInfo.text = "";
+
+	}
+
 
 	public void OnMouseExit() {
 
@@ -69,7 +85,7 @@ public class CardDisplayNew : MonoBehaviour {
 		Global.me.RemoveCardInfo ();
 		count = 0;
 		RemoveCardInfo ();
-		sprite.sortingOrder = 0;
+		//sprite.sortingOrder = 0;
 		// delete the alert
 		
 	}
@@ -89,26 +105,45 @@ public class CardDisplayNew : MonoBehaviour {
 		}
 	}
 
+
 	public void DisplayInfo() {
 
-		if (!isTextDisplayed) {
+		if (!isTextDisplayed && !this.card.isEnemyCard) {
 			isTextDisplayed = true;
-			currentlyDisplayedText = Instantiate (orbTextObj);
-			orbText = currentlyDisplayedText.GetComponent<TextMesh> ();
-			orbText.text = card.name + "\n" + "damage: " + card.damage + "\n" + "health: " + card.health;
-
-			if (!card.isEnemyCard)
-				orbText.color = new Color (.2f, .2f, .9f, .6f);
+			orbText.text = card.name + "\n" + card.damage + "D, " + card.health + "H" + "\n" + card.description;
 		}
 
+		if (!isTextDisplayed && card.isEnemyCard) {
+			orbText.color = new Color (.2f, .2f, .9f, .6f);
+			orbText.text = card.name + "\n" + card.damage + "D, " + card.health + "H";
+		}
+			
 	}
 
 
 
 	public void RemoveCardInfo() {
 
-		Destroy (currentlyDisplayedText);
+		orbText.text = "";
 		isTextDisplayed = false;
+
+	}
+
+	public void Wisp() {
+
+		wispTemp = Instantiate (wisp, this.transform.position, Quaternion.identity);
+
+		ParticleSystem wispParticle = wispTemp.GetComponent<ParticleSystem> ();
+		ParticleController particleController = wispTemp.GetComponent<ParticleController> ();
+
+		wispParticle.startColor = card.color;
+		var shape = wispParticle.shape;
+		shape.radius = Random.Range (0.05f, 0.38f);
+		//wispParticle.emissionRate = wispParticle.emissionRate * (card.health / 10); 	
+
+		wispParticle.Play ();
+		particleController.StartLerping (game.cardGamePlayer.transform.position);
+		Destroy (wispTemp, 3);
 
 	}
 
@@ -135,10 +170,13 @@ public class CardDisplayNew : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 
-		if (isTextDisplayed) {
-			orbText.text = card.name + "\n" + "damage: " + card.damage + "\n" + "health: " + card.health;
+		if (game.cardSelected == this.card) {
 			
+			Wisp ();
+
 		}
+
+
 
 
 

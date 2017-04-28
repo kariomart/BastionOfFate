@@ -15,7 +15,10 @@ public class Paladin : Card {
 	{
 
 		int roll = Random.Range (1, 4);
-		health += roll;
+
+		if (health < 10) {
+			health += roll;
+		}
 
 		return roll;
 

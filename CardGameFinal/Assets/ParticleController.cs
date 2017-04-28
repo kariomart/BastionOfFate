@@ -17,13 +17,13 @@ public class ParticleController : MonoBehaviour {
 	Transform boop;
 
 
-	public void StartLerping(Transform destination)
+	public void StartLerping(Vector2 destination)
 	{
 		_isLerping = true;
 		_timeStartedLerping = Time.time;
 
 		_startPosition = transform.position;
-		_endPosition = destination.position;
+		_endPosition = destination;
 		//boop = destination;
 	}
 
@@ -52,7 +52,7 @@ public class ParticleController : MonoBehaviour {
 
 			//When we've completed the lerp, we set _isLerping to false
 			if(percentageComplete >= 0.99f)
-				Global.me.ShakeScreen (Random.Range(1f, 4f), .25f);
+				//Global.me.ShakeScreen (Random.Range(1f, 4f), .25f);
 
 			
 			if(percentageComplete >= 1.0f)
