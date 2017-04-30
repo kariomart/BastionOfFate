@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CardDisplayNew : MonoBehaviour {
 
@@ -9,9 +10,8 @@ public class CardDisplayNew : MonoBehaviour {
 	public SpriteRenderer sprite;
 
 	public GameObject orbTextObj;
-	public GameObject currentlyDisplayedText;
-
-	public TextMesh orbText;
+	public TextMeshPro friendlyOrbInfo;
+	public TextMeshPro enemyOrbInfo;
 	public TextMesh extraInfo;
 	public TextMesh nameInfo;
 
@@ -37,7 +37,8 @@ public class CardDisplayNew : MonoBehaviour {
 		sprite = GetComponent<SpriteRenderer> ();
 		GameObject g = GameObject.Find ("CardGame");
 		cam = GameObject.Find ("CardCamera").GetComponent<Screenshake>();
-		orbText = GameObject.Find ("OrbText").GetComponent<TextMesh> ();
+		friendlyOrbInfo = GameObject.Find ("friendlyCardText").GetComponent<TextMeshPro> ();
+		enemyOrbInfo = GameObject.Find ("enemyCardText").GetComponent<TextMeshPro> ();
 		game = g.GetComponent<CardGameRunner> ();
 
 		orbitSpeed = Random.Range(1f, 1.3f);
@@ -47,10 +48,16 @@ public class CardDisplayNew : MonoBehaviour {
 	}
 
 	void Orbit() {
-		
-		Vector2 orbitPos = game.cardGamePlayer.transform.position;
-		transform.position = orbitPos + (MagicSpells.ToVect((MagicSpells.ToAng(orbitPos, transform.position) + orbitSpeed)) * orbitRadii);
 
+		if (!card.isEnemyCard) {
+			Vector2 orbitPos = game.cardGamePlayer.transform.position;
+			transform.position = orbitPos + (MagicSpells.ToVect ((MagicSpells.ToAng (orbitPos, transform.position) + orbitSpeed)) * orbitRadii);
+		}
+
+		if (card.isEnemyCard) {
+			Vector2 orbitPos = game.cardGameEnemy.transform.position;
+			transform.position = orbitPos + (MagicSpells.ToVect ((MagicSpells.ToAng (orbitPos, transform.position) + orbitSpeed)) * orbitRadii);
+		}
 	}
 		
 
@@ -59,8 +66,15 @@ public class CardDisplayNew : MonoBehaviour {
 
 		hovering = true;
 		sprite.sortingOrder = 3;
-		DisplayInfo ();
-		//OrbShake ();
+
+		TextMeshController text = game.extraCardInfo.GetComponent<TextMeshController> ();
+
+		if (text.counter == 0) {
+			text.hovering = true;
+			game.AnimateText (card.name + "\n" + card.description, game.extraCardInfo);
+		}
+			//OrbShake ();
+		DisplayInfo();
 
 
 
@@ -81,13 +95,18 @@ public class CardDisplayNew : MonoBehaviour {
 
 	public void OnMouseExit() {
 
-		hovering = false;
-		Global.me.RemoveCardInfo ();
+		//Global.me.RemoveCardInfo ();
 		count = 0;
-		RemoveCardInfo ();
+		hovering = false;
+		TextMeshController text = game.extraCardInfo.GetComponent<TextMeshController> ();
+
+		if (text.hovering)
+			text.counter = 0;
+		
+		if (!game.cardCurrentlySelected)
+			RemoveCardInfo ();
 		//sprite.sortingOrder = 0;
 		// delete the alert
-		
 	}
 
 
@@ -110,12 +129,12 @@ public class CardDisplayNew : MonoBehaviour {
 
 		if (!isTextDisplayed && !this.card.isEnemyCard) {
 			isTextDisplayed = true;
-			orbText.text = card.name + "\n" + card.damage + "D, " + card.health + "H" + "\n" + card.description;
+			friendlyOrbInfo.text = card.name + "\n" + card.damage + "D " + card.health + "H" + "\n";
 		}
 
 		if (!isTextDisplayed && card.isEnemyCard) {
-			orbText.color = new Color (.2f, .2f, .9f, .6f);
-			orbText.text = card.name + "\n" + card.damage + "D, " + card.health + "H";
+			enemyOrbInfo.color = new Color (.2f, .2f, .9f, .6f);
+			enemyOrbInfo.text = card.name + "\n" + card.damage + "D " + card.health + "H" + "\n";
 		}
 			
 	}
@@ -124,7 +143,7 @@ public class CardDisplayNew : MonoBehaviour {
 
 	public void RemoveCardInfo() {
 
-		orbText.text = "";
+		friendlyOrbInfo.text = "";
 		isTextDisplayed = false;
 
 	}
@@ -159,15 +178,24 @@ public class CardDisplayNew : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (!card.isEnemyCard && !hovering)
+		if (!hovering)
 			Orbit ();
 
 		if (card.dead) {
-			Destroy (currentlyDisplayedText);
 			//Destroy (selectedText);
 			Instantiate (explosion, this.transform.position, Quaternion.identity);
 
+			if (!card.isEnemyCard) {game.AnimateText ("friendly " + card.name + " has died!", game.battleInfo); }
+			 
+			if (card.isEnemyCard) { game.AnimateText ("enemy " + card.name + " has died!", game.battleInfo); }
+
 			Destroy (this.gameObject);
+
+			if (!card.isEnemyCard)
+				game.cardSelected = null; game.cardCurrentlySelected = false;
+ 
+			if (card.isEnemyCard)
+				game.enemySelected = null; game.enemyCurrentlySelected = false;
 		}
 
 		if (game.cardSelected == this.card) {

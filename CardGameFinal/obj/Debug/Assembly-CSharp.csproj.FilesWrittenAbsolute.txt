@@ -39,3 +39,4 @@
 /Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/Mono.Cecil.Mdb.dll
 /Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/Assembly-CSharp-firstpass.dll
 /Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/Assembly-CSharp-firstpass.dll.mdb
+/Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/TextMeshPro.dll

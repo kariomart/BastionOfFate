@@ -19,3 +19,4 @@
 /Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/Martin/Github/BastionOfFate/CardGameFinal/Temp/bin/Debug/TextMeshPro.dll

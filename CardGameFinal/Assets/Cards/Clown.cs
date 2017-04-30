@@ -8,7 +8,7 @@ public class Clown : Card {
 		name = "The Clown";
 		health = 3;
 		damage = 2;
-		description = "swaps its health and damage\n every roll";
+		description = "Swaps its health and damage every roll";
 	}
 
 	public override int RollDie ()

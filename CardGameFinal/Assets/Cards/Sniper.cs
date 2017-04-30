@@ -8,7 +8,7 @@ public class Sniper : Card {
 		name = "The Sniper";
 		health = 3; 
 		damage = 2;
-		description = "its low rolls are lower \nand its high rolls are higher";
+		description = "rolls 2 and 3 are set to 1, but 4 and 5 are set to 6.";
 	}
 
 	public override int RollDie () {

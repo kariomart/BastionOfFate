@@ -8,7 +8,7 @@ public class Phoenix : Card {
 		name = "The Phoenix";
 		health = 3;
 		damage = 3;
-		description = "has to take exactly its\n health as damage to die.";
+		description = "has to take exactly its health as damage to die.";
 	}
 		
 

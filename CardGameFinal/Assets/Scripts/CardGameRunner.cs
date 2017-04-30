@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 
 public class CardGameRunner : MonoBehaviour {
@@ -13,7 +14,10 @@ public class CardGameRunner : MonoBehaviour {
 	List<CardDisplayNew> displays = new List<CardDisplayNew>();
 
 	public bool cardCurrentlySelected = false;
+	public bool enemyCurrentlySelected = false;
 	public Card cardSelected;
+	public Card enemySelected;
+
 	public bool inBattle = false;
 	public bool postScreen = false;
 	public bool accepted = false;
@@ -22,17 +26,22 @@ public class CardGameRunner : MonoBehaviour {
 	public int cardsInPlay = 0;
 	public int cardsThatHaveAttacked = 0;
 	public int friendliesDead = 0;
+	public int counter = 0;
 	public int dmg;
 
 	public GameObject cardGamePlayer;
+	public GameObject cardGameEnemy;
 	public GameObject notification;
 	public GameObject notificationInstance;
 	public GameObject explosion; 
+	public GameObject attackButton;
 
-	public TextMesh selectedText;
-	public TextMesh gameInfo;
 	public TextMesh enemyRollText;
 	public TextMesh playerRollText;
+	public TextMeshPro battleInfo;
+	public TextMeshPro extraCardInfo;
+
+
 
 
 	void Awake() {
@@ -56,11 +65,22 @@ public class CardGameRunner : MonoBehaviour {
 		CheckKeys ();
 		DeathTests ();
 		RemoveDeadCards ();
-		UpdateText ();
 
 
 	}
+		
 
+
+	public void AttackButtonClicked() {
+		if (cardCurrentlySelected && enemyCurrentlySelected) {
+
+			Combat (enemySelected);
+
+		}
+
+
+
+	}
 
 	// Sets up the basics for the card game
 	public void SetupGame() 
@@ -68,14 +88,14 @@ public class CardGameRunner : MonoBehaviour {
 	{
 		
 		inBattle = true;
-
+		battleInfo.SetText ("The battle has begun.");
 
 
 		inventory = Global.me.inventory;
 		enemies = Global.me.enemiesTransfer;
-		cardGamePlayer = GameObject.Find ("CardGamePlayer");
-		selectedText = GameObject.Find ("selectedText").GetComponent<TextMesh>();
-		gameInfo = GameObject.Find ("GameInfo").GetComponent<TextMesh> ();
+		cardGamePlayer = GameObject.Find ("cardGamePlayer");
+		cardGameEnemy = GameObject.Find ("cardGameEnemy");
+
 
 
 		enemiesDead = 0;
@@ -111,6 +131,7 @@ public class CardGameRunner : MonoBehaviour {
 			displaySprite.color = new Color (255, 0, 0);
 			displays.Add (display);
 			car.display = display;
+			car.display.orbitRadii = (1 + (1.15f * count));
 			display.card = car;
 			car.isEnemyCard = true;
 
@@ -143,17 +164,9 @@ public class CardGameRunner : MonoBehaviour {
 
 
 
-	public void UpdateText() {
-
-		if (cardCurrentlySelected && cardSelected != null && inBattle) {
-			selectedText.text = cardSelected.name + "\n" + "damage: " + cardSelected.damage + "\n" + "health: " + cardSelected.health;
-
-		}
-
-	}
 
 	public void UpdateBattleInfo(string info) {
-		//gameInfo.text = info;
+		battleInfo.SetText (info);
 
 	}
 
@@ -178,17 +191,21 @@ public class CardGameRunner : MonoBehaviour {
 
 
 		if (playerRoll > enemyRoll) {
-			Global.me.PlayParticleEffect (enemy.display.transform.position, cardSelected.color);  
+			Global.me.PlayParticleEffect (cardGamePlayer.transform.position, cardGameEnemy.transform.position, cardSelected.color);  
 			enemy.TakeDamage (cardSelected.damage);
-			Debug.Log (cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name);
+			string tempRoll = cardSelected.name + " has dealt " + cardSelected.damage + " damage to the " + enemy.name;
+			AnimateText (tempRoll, battleInfo);
+			Debug.Log (tempRoll);
 
 			//Global.me.console.text = cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name;
 		}
 		
 		if (enemyRoll > playerRoll) {
-			Global.me.PlayParticleEffect (enemy.display.transform.position, cardGamePlayer.transform.position, enemy.color);  
+			Global.me.PlayParticleEffect (cardGameEnemy.transform.position, cardGamePlayer.transform.position, enemy.color);  
 			cardSelected.TakeDamage (enemy.damage);
-			Debug.Log (enemy.name + " has dealt " + enemy.damage + " to the " + cardSelected.name);
+			string tempRoll = enemy.name + " has dealt " + enemy.damage + " damage to the " + cardSelected.name;
+			Debug.Log (tempRoll);
+			AnimateText (tempRoll, battleInfo);
 			//Global.me.console.text = enemy.name + " has dealt " + enemy.damage + " to the " + cardSelected.name;
 		}
 
@@ -197,7 +214,9 @@ public class CardGameRunner : MonoBehaviour {
 			TieParticleEffect (enemy);
 			cardSelected.WinTies ();
 			enemy.TakeDamage (cardSelected.damage);
-			Debug.Log (cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name);
+			string tempRoll = cardSelected.name + " has dealt " + cardSelected.damage + " damage to the " + enemy.name;
+			Debug.Log(tempRoll);
+			AnimateText (tempRoll, battleInfo);
 			//Global.me.console.text = cardSelected.name + " has dealt " + cardSelected.damage + " to the " + enemy.name;
 
 		} else
@@ -210,7 +229,7 @@ public class CardGameRunner : MonoBehaviour {
 
 	void TieParticleEffect(Card enemy) {
 
-		Vector2 enemyPos = enemy.display.transform.position;
+		Vector2 enemyPos = cardGameEnemy.transform.position;
 		Vector2 playerPos = cardGamePlayer.transform.position;
 		Vector2 midpoint = playerPos + ((enemyPos - playerPos) * 0.5f);
 
@@ -325,7 +344,6 @@ public class CardGameRunner : MonoBehaviour {
 	}
 
 	public void RemoveHUD() {
-		//Debug.Log ("HUD DISPLAYED");
 
 		foreach (Card ca in inventory) 
 
@@ -389,7 +407,6 @@ public class CardGameRunner : MonoBehaviour {
 		ClearObjects ();
 		Global.me.backgroundMusic.clip = Global.me.overworldMusic;
 		Global.me.backgroundMusic.Play ();
-		selectedText.text = " ";
 		DisplayEndOfGame ();
 
 	}
@@ -421,6 +438,21 @@ public class CardGameRunner : MonoBehaviour {
 
 	}
 
+	public void AnimateText(string desc, TextMeshPro textMesh) {
+
+		TextMeshController text = textMesh.GetComponent<TextMeshController> ();
+		if (desc != text.text) {
+			
+
+			text.hovering = false;
+			text.counter = 1;
+			text.text = desc;
+
+		}
+
+	}
+
+
 	public void ClearObjects() {
 
 		foreach (CardDisplayNew display in displays) {
@@ -429,6 +461,8 @@ public class CardGameRunner : MonoBehaviour {
 			if (display != null) 
 				Destroy (display.gameObject);
 		}
+
+		battleInfo.SetText ("");
 	}
 
 
@@ -436,22 +470,35 @@ public class CardGameRunner : MonoBehaviour {
 
 
 		if (!card.isEnemyCard) {
-			Debug.Log ("You have selected " + card.name);
-			cardCurrentlySelected = true;
+			AnimateText (("You have selected " + card.name), battleInfo);
+			AnimateText (card.name + "\n" + card.description, extraCardInfo);
+
+
 			ParticleSystem cardGamePlayerParticles = cardGamePlayer.GetComponent<ParticleSystem> ();
+			cardCurrentlySelected = true;
 			cardSelected = card; 
 
 			ParticleSystem.MainModule settings = cardGamePlayerParticles.GetComponent<ParticleSystem>().main;
 			settings.startColor = new ParticleSystem.MinMaxGradient( cardSelected.color );
 
+			if (enemyCurrentlySelected)
+				AnimateText(cardSelected.name + " vs " + enemySelected.name, battleInfo);
+			
+				
 
 		}
 			
 
-		if (card.isEnemyCard && cardSelected != null) {
+		if (card.isEnemyCard) {
 
-			Combat (card);
+			enemySelected = card;
+			enemyCurrentlySelected = true;
+			AnimateText("You have selected " + card.name, battleInfo);
 //			Global.me.PlayParticleEffect (position, cardSelected.color);  
+
+			if (cardCurrentlySelected)
+				AnimateText(cardSelected.name + " vs " + enemySelected.name, battleInfo);
+			
 
 		}
 

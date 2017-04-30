@@ -8,7 +8,7 @@ public class Blackjack : Card {
 		name = "The Blackjack";
 		health = 4;
 		damage = 2;
-		description = "Rolls twice, if the \ncombined roll is higher than 6 \nhis roll gets set to 0.";
+		description = "Rolls twice, if the combined roll is higher than 6 his roll gets set to 0, otherwise he gets the combined roll.";
 	}
 
 	public override int RollDie ()

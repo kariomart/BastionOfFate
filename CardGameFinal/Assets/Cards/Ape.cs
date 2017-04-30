@@ -7,7 +7,7 @@ public class Ape : Card {
 	public  Ape() {
 		name = "The Ape";
 		health = 6; 
-		description = "Roll a 3 and gain\n 2 damage. Roll a 6\n and take 1 damage.";
+		description = "Roll a 3 and gain 2 damage. Roll a 6 and take 1 damage.";
 	}
 
 	public override int RollDie () {

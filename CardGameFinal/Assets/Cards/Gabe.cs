@@ -7,13 +7,14 @@ public class Gabe : Card {
 	public  Gabe() {
 		name = "The Gabe";
 		health = 5;
-		description = "you damned fool!";
+		description = "Either rolls a 6 or a 1";
 	}
 
 	public override int RollDie ()
 	{
 		int roll;
 		int rand = Random.Range (1, 11);
+
 		if (rand % 2 == 0)
 			roll = 6;
 		else

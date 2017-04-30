@@ -22,9 +22,7 @@ public class CardGamePlayerController : MonoBehaviour {
 
 	public void OnMouseOver() {
 
-		if (!Global.me.isCardCurrentlyDisplayed && game.cardSelected != null) {
-			Global.me.DisplayCardInfo (game.cardSelected);
-		}
+
 	}
 
 	public void OnMouseExit() {

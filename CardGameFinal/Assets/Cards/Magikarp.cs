@@ -8,7 +8,7 @@ public class Magikarp : Card {
 		name = "Magikarp";
 		health = 5;
 		damage = 0;
-		description = "does nothing unless you get lucky";
+		description = "Does nothing unless you get lucky";
 	}
 
 	public override int RollDie ()
@@ -21,7 +21,8 @@ public class Magikarp : Card {
 		int roll3 = Random.Range (1, 5);
 
 		if (roll1 == roll2 && roll2 == roll3) {
-			Debug.Log ("MAGIKARP EVOLVED INTO GYARADOS");
+			CardGameRunner game = Global.me.cardGameRunner.GetComponent<CardGameRunner> ();
+			game.AnimateText ("MAGIKARP EVOLVED INTO GYARADOS", game.battleInfo);
 			health = 10;
 			damage = 10;
 		}

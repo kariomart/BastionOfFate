@@ -7,10 +7,6 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 
 	public static Global me;
-//	public PanelController battlefieldPanel;
-//	public PlayerController Player;
-//	public CardController Card;
-//	public GameObject HandDisplay;
 	public List<Card> inventory;
 	public List<Card> cards;
 	public List<Card> enemiesTransfer = new List<Card>();

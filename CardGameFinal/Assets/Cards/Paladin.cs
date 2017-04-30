@@ -8,7 +8,7 @@ public class Paladin : Card {
 		name = "The Paladin";
 		health = 4;
 		damage = 1;
-		description = "this card is honestly busted \nyou don't really need to know what it does";
+		description = "Can only roll 1-3, but heals the roll amount up to 10 max health.";
 	}
 
 	public override int RollDie ()

@@ -11,7 +11,7 @@ public class Cat : Card {
 		name = "The Cat";
 		health = 1;
 		damage = 1;
-		description = "The Cat can only roll 1-4\n, but has 9 lives!";
+		description = "Can only roll 1-4, but has 9 lives!";
 	}
 		
 

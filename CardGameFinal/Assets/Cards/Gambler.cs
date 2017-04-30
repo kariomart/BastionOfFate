@@ -8,7 +8,7 @@ public class Gambler : Card {
 		name = "The Gambler";
 		health = 5; 
 		damage = 2;
-		description = "if The Gambler rolles less than \n4 he takes 1 damage and rolls again.";
+		description = "If rolls less than 4, takes 1 damage and rolls again";
 	}
 
 	public override int RollDie () {
