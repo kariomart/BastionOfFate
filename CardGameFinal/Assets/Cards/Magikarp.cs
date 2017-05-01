@@ -22,7 +22,7 @@ public class Magikarp : Card {
 
 		if (roll1 == roll2 && roll2 == roll3) {
 			CardGameRunner game = Global.me.cardGameRunner.GetComponent<CardGameRunner> ();
-			game.AnimateText ("MAGIKARP EVOLVED INTO GYARADOS", game.battleInfo);
+			game.AnimateText ("MAGIKARP EVOLVED INTO GYARADOS", game.cardAbilityInfo);
 			health = 10;
 			damage = 10;
 		}

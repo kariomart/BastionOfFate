@@ -51,8 +51,8 @@ public class ParticleController : MonoBehaviour {
 			transform.position = Vector3.Lerp (_startPosition, _endPosition, speed * percentageComplete);
 
 			//When we've completed the lerp, we set _isLerping to false
-			if(percentageComplete >= 0.99f)
-				//Global.me.ShakeScreen (Random.Range(1f, 4f), .25f);
+			if (percentageComplete >= 0.99f)
+				Global.me.ShakeScreen (.4f, .4f);
 
 			
 			if(percentageComplete >= 1.0f)

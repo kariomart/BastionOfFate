@@ -18,6 +18,7 @@ public class Martyr : Card {
 
 		if (roll == 1 || roll == 2 || roll == 3 || roll == 4 || roll == 5) {
 			roll = 1;
+			Global.me.game.AnimateText("The Martyr has exploded", Global.me.game.cardAbilityInfo);
 			health = 0;
 		}
 

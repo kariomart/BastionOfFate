@@ -8,6 +8,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 	public static Global me;
 	public List<Card> inventory;
+	public List<Card> hand;
 	public List<Card> cards;
 	public List<Card> enemiesTransfer = new List<Card>();
 
@@ -17,8 +18,10 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public bool inCardGame = false;
 	public bool isCardCurrentlyDisplayed = false;
 	public GameObject cardCurrentlyDisplayed;
+	public GameObject enemyBattled;
 
 	public GameObject cardGameRunner; 
+	public CardGameRunner game;
 	public GameObject overworld;
 
 
@@ -91,9 +94,10 @@ public class Global : MonoBehaviourSingleton <Global> {
 			return new Phoenix ();
 		else if (i == 13)
 			return new Sniper ();
-		else if(i == 14) 
+		else if (i == 14)
 			return new Zombie ();
-
+		else if (i == 15)
+			return new Priest ();
 
 		 else
 			return new Card ();
@@ -129,6 +133,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 		apple = GameObject.Find ("apple");
 		player = GameObject.Find ("Player");
 		cardGamePlayer = GameObject.Find ("CardGamePlayer");
+		game = cardGameRunner.GetComponent<CardGameRunner> ();
 
 		GameObject p = player.transform.GetChild (0).gameObject;
 		playerCam = p.GetComponent<Camera> ();
@@ -145,6 +150,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 
 		cards = new List<Card> ();
 		inventory = new List<Card> ();
+		hand = new List<Card> ();
 
 		cards.Add (new Ape());
 		cards.Add (new Armadillo());
@@ -161,6 +167,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 		cards.Add (new Phoenix ());
 		cards.Add (new Sniper ());
 		cards.Add (new Zombie ());
+		cards.Add (new Priest ());
 
 
 
@@ -170,7 +177,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 		abilities.Add (a4);
 
 		//GenerateOverworld ();
-		//GiveDefaultCards ();
+		GiveDefaultCards ();
 
 
 	}
@@ -259,6 +266,13 @@ public class Global : MonoBehaviourSingleton <Global> {
 	}
 
 
+	public void DoStuffAfterParticleLands () {
+		ShakeScreen (Random.Range(1f, 4f), .25f);
+
+
+
+	}
+
 
 	public void DisplayCardInfo(Card card) {
 
@@ -303,7 +317,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 	
 	// Update is called once per frame
 	void Update () {
-		// Debug.Log (inventory.Count);
-		// Debug.Log (cards.Count);
+
+
 	}
 }

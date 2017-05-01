@@ -28,6 +28,7 @@ public class Cat : Card {
 	{
 		
 		int roll = Random.Range (1, 5);
+		Global.me.game.AnimateText("The Cat has " + lives, Global.me.game.cardAbilityInfo);
 		return roll;
 
 

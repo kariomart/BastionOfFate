@@ -26,7 +26,7 @@ public class DoorController : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D other) {
 		if (doorOpened && other.name == "Player") {
-			collider.isTrigger = false;
+			//collider.isTrigger = false;
 			sprite.color = new Color (0, 255, 255);
 
 		}

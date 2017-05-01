@@ -31,6 +31,8 @@ public class CardDisplayNew : MonoBehaviour {
 
 
 
+
+
 	// Use this for initialization
 	void Start () {
 
@@ -41,7 +43,7 @@ public class CardDisplayNew : MonoBehaviour {
 		enemyOrbInfo = GameObject.Find ("enemyCardText").GetComponent<TextMeshPro> ();
 		game = g.GetComponent<CardGameRunner> ();
 
-		orbitSpeed = Random.Range(1f, 1.3f);
+		orbitSpeed = Random.Range(1.1f, 1.2f);
 		//orbitRadi = Random.Range(2f, 4f);
 
 
@@ -81,14 +83,20 @@ public class CardDisplayNew : MonoBehaviour {
 	}
 
 	public void DisplayExtraInfo() {
-		extraInfo.text = card.damage + "D\n" + card.health + "H";
-		nameInfo.text = card.name;
+
+		if (extraInfo && nameInfo != null) {
+			extraInfo.text = card.damage + "D\n" + card.health + "H";
+			nameInfo.text = card.name;
+		}
 
 	}
 
+
 	public void RemoveExtraInfo() {
-		extraInfo.text = "";
-		nameInfo.text = "";
+		if (extraInfo != null) {
+			extraInfo.text = "";
+			nameInfo.text = "";
+		}
 
 	}
 
@@ -153,7 +161,7 @@ public class CardDisplayNew : MonoBehaviour {
 		wispTemp = Instantiate (wisp, this.transform.position, Quaternion.identity);
 
 		ParticleSystem wispParticle = wispTemp.GetComponent<ParticleSystem> ();
-		ParticleController particleController = wispTemp.GetComponent<ParticleController> ();
+		WispParticleController particleController = wispTemp.GetComponent<WispParticleController> ();
 
 		wispParticle.startColor = card.color;
 		var shape = wispParticle.shape;
@@ -185,9 +193,9 @@ public class CardDisplayNew : MonoBehaviour {
 			//Destroy (selectedText);
 			Instantiate (explosion, this.transform.position, Quaternion.identity);
 
-			if (!card.isEnemyCard) {game.AnimateText ("friendly " + card.name + " has died!", game.battleInfo); }
+			if (!card.isEnemyCard) { game.AnimateText ("\nfriendly " + card.name + " has died!", game.battleInfo); }
 			 
-			if (card.isEnemyCard) { game.AnimateText ("enemy " + card.name + " has died!", game.battleInfo); }
+			if (card.isEnemyCard) { game.AnimateText ("\nenemy " + card.name + " has died!", game.battleInfo); }
 
 			Destroy (this.gameObject);
 

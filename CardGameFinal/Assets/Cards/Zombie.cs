@@ -14,6 +14,7 @@ public class Zombie : Card {
 		int roll = Random.Range (1, 7);
 
 		if (roll == 6) {
+			Global.me.game.AnimateText("The Zombie has eaten its own brains", Global.me.game.cardAbilityInfo);
 			health = 0;
 		}
 

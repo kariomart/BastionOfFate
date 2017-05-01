@@ -21,10 +21,7 @@ public class attackButtonController : MonoBehaviour {
 			game = Global.me.cardGameRunner.GetComponent<CardGameRunner>();
 		}
 
-		if (game.cardCurrentlySelected && game.enemyCurrentlySelected)
-			sprite.color = Color.red;
-		else
-			sprite.color = Color.blue;
+
 	}
 
 	public void OnMouseDown() {

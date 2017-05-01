@@ -8,6 +8,7 @@ public class Card {
 	public int health;
 	public int tokens;
 	public int damage = 1;
+	public int handIndex;
 	public string name;
 	public SpriteRenderer cardBase;
 	public string description = "default";

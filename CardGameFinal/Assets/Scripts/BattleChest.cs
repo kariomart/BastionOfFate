@@ -34,6 +34,7 @@ public class BattleChest : MonoBehaviour {
 		rigid.AddForce (force);
 
 		int rand = Random.Range (0, 30);
+
 		if (rand == 10) {	
 			if (sprite.flipX = true)
 				sprite.flipX = false;
@@ -48,6 +49,8 @@ public class BattleChest : MonoBehaviour {
 			if (Global.me.inCardGame == false) {
 				Global.me.CurrentBattle (enemies);
 				Global.me.RunCardGame ();
+				Global.me.enemyBattled = this.gameObject;
+
 				//Destroy (this.gameObject);
 			}
 		}
