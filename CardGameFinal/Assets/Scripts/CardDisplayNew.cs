@@ -141,7 +141,7 @@ public class CardDisplayNew : MonoBehaviour {
 		}
 
 		if (!isTextDisplayed && card.isEnemyCard) {
-			enemyOrbInfo.color = new Color (.2f, .2f, .9f, .6f);
+			//enemyOrbInfo.color = new Color (.2f, .2f, .9f, .6f);
 			enemyOrbInfo.text = card.name + "\n" + card.damage + "D " + card.health + "H" + "\n";
 		}
 			
@@ -186,6 +186,10 @@ public class CardDisplayNew : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		Color tmp = sprite.color;
+		tmp.a = (float)card.health / 3;
+		sprite.color = tmp;
+
 		if (!hovering)
 			Orbit ();
 
@@ -211,7 +215,7 @@ public class CardDisplayNew : MonoBehaviour {
 			Wisp ();
 
 		}
-
+ 
 
 
 

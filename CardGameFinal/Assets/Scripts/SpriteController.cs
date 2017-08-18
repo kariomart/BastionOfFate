@@ -34,7 +34,10 @@ public class SpriteController : MonoBehaviour {
 		speed = new Vector2 (horizontal, vertical);
 		speed.Normalize();
 		rigid.velocity = new Vector2 (0, 0);
-		rigid.MovePosition (rigid.position + speed * 8 * Time.deltaTime);
+
+		if (!Global.me.notifying) {
+			rigid.MovePosition (rigid.position + speed * 8 * Time.deltaTime);
+		}
 
 	}
 		

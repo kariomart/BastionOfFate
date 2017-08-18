@@ -29,7 +29,7 @@ public class InventoryOrbController : MonoBehaviour {
 
 
 		Color tmp = sprite.color;
-		tmp.a = (float)card.health / 5;
+		tmp.a = (float)card.health / 3;
 		sprite.color = tmp;
 
 		
@@ -55,6 +55,11 @@ public class InventoryOrbController : MonoBehaviour {
 
 
 		}
+	}
+
+	public void OnMouseOver() {
+
+		Global.me.game.extraCardInfo.text = card.name + "\n" + card.description;
 	}
 
 	public void ClearInventory() {

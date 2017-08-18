@@ -1,0 +1,26 @@
+STUFF:
+
+overworld:
+WASD to move
+
+—————————————
+
+orb battle:
+CLICK THE PINK ORB IN THE BOTTOM RIGHT FOR BETTER UI
+
+1. select 3 blue orbs to battle with
+2. click on a friendly orb and then an enemy orb
+3. click attack button
+4. repeat
+
+detailed card descriptions top middle screen
+battle info bottom middle 
+currently selected card info under respective players
+
+If you get locked into a card game, you can press “r” to autowin and advance.
+
+—————————————
+
+winning the game:
+if you run out of orbs you lose (doesn’t really work yet)
+fight the big red dude when you feel ready… he doesn’t trigger winning either tho so yeah

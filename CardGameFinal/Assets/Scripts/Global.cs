@@ -17,6 +17,7 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public TextMesh console;
 	public bool inCardGame = false;
 	public bool isCardCurrentlyDisplayed = false;
+	public bool notifying;
 	public GameObject cardCurrentlyDisplayed;
 	public GameObject enemyBattled;
 
@@ -25,9 +26,9 @@ public class Global : MonoBehaviourSingleton <Global> {
 	public GameObject overworld;
 
 
-	string a1 = "this ability wins ties";
-	string a2 = "this ability reduces enemy roll by 1";
-	string a3 = "this ability heals friendlies each turn";
+	string a1 = "Always win's ties.";
+	string a2 = "Reduces enemy roll by 1 every combat phase.";
+	string a3 = "doubles damage, halves health.";
 	string a4 = "this card deals double damage but also takes double damage";
 
 	public GameObject chest;

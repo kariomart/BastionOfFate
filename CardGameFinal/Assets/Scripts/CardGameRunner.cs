@@ -59,6 +59,8 @@ public class CardGameRunner : MonoBehaviour {
 	public TextMeshPro battleInfo;
 	public TextMeshPro extraCardInfo;
 	public TextMeshPro cardAbilityInfo;
+	public TextMeshPro friendlyCardText;
+	public TextMeshPro enemyCardText;
 
 	public AudioClip coin;
 	public AudioClip charge;
@@ -134,17 +136,25 @@ public class CardGameRunner : MonoBehaviour {
 			CheckKeys ();
 			DeathTests ();
 			RemoveDeadCards ();
+
+			if (cardCurrentlySelected) {
+				cardSelected.display.DisplayInfo ();
+			}
+
+			if (enemyCurrentlySelected) {
+				enemySelected.display.DisplayInfo ();
+			}
+
+			playerRollText.text = NumboJumbo (int.Parse (playerRollText.text), 0);
+			enemyRollText.text = NumboJumbo (int.Parse (enemyRollText.text), 1);
+
+			print (postScreen);
+
 		}
 
-		playerRollText.text = NumboJumbo (int.Parse (playerRollText.text), 0);
-		enemyRollText.text = NumboJumbo (int.Parse (enemyRollText.text), 1);
-
-		if (Input.GetKeyDown (KeyCode.Space) && postScreen) 
-		{
+		if (Input.GetKeyDown (KeyCode.Space) && postScreen) {
 			Transition ();
 		}
-
-
 	}
 
 	void FixedUpdate() {
@@ -218,7 +228,7 @@ public class CardGameRunner : MonoBehaviour {
 				numboShit [0] = true;
 				numboShit [1] = true;
 
-				cardAbilityInfo.SetText ("");
+				//cardAbilityInfo.SetText ("");
 				Combat (enemySelected);
 				//SoundController.me.PlaySound (charge, 1);
 				Global.me.ShakeScreen (.3f, .5f);
@@ -248,6 +258,7 @@ public class CardGameRunner : MonoBehaviour {
 		Destroy(background.gameObject);
 
 		foreach (InventoryOrbController orb in selectionDisplays) {
+			
 			if (orb != null)
 			Destroy (orb.gameObject);
 		}
@@ -273,6 +284,12 @@ public class CardGameRunner : MonoBehaviour {
 
 			foreach (Card ca in Global.me.hand) {
 				ca.inPlay = false;
+
+				if (ca.a3_heal) {
+					ca.health /= 2;
+					ca.damage *= 2;
+				}
+
 				GameObject bloop = Instantiate (cardBase, new Vector3 (41 + (2 * count), -3, 0), Quaternion.identity);
 				CardDisplayNew display = bloop.GetComponent<CardDisplayNew> ();
 				displays.Add (display);
@@ -308,9 +325,10 @@ public class CardGameRunner : MonoBehaviour {
 
 		int count = -1;
 		background = Instantiate (BG, cardGamePlayer.transform.position, Quaternion.identity);
+		//AnimateText ("", cardAbilityInfo);
 
 		foreach (Card card in Global.me.inventory) {
-			GameObject orb = Instantiate (inventoryOrb, new Vector2(cardGamePlayer.transform.position.x + (2 * count), cardGamePlayer.transform.position.y + 3), Quaternion.identity);
+			GameObject orb = Instantiate (inventoryOrb, new Vector2(cardGamePlayer.transform.position.x + (2 * count), cardGamePlayer.transform.position.y - 3.5f), Quaternion.identity);
 			orb.GetComponent<InventoryOrbController>().SetValues (card);
 			selectionDisplays.Add (orb.GetComponent<InventoryOrbController>());
 			count++;
@@ -319,7 +337,7 @@ public class CardGameRunner : MonoBehaviour {
 
 		count = -1;
 		foreach (Card enemy in Global.me.enemiesTransfer) {
-			GameObject enemyOrb = Instantiate (inventoryOrb, new Vector2(cardGamePlayer.transform.position.x + (2 * count), cardGamePlayer.transform.position.y - 3), Quaternion.identity);
+			GameObject enemyOrb = Instantiate (inventoryOrb, new Vector2(cardGamePlayer.transform.position.x + (2 * count), cardGamePlayer.transform.position.y + 2), Quaternion.identity);
 			enemyOrb.GetComponent<SpriteRenderer> ().color = Color.red;
 			enemyOrb.GetComponent<InventoryOrbController>().SetValues (enemy);
 			selectionDisplays.Add (enemyOrb.GetComponent<InventoryOrbController>());
@@ -592,6 +610,7 @@ public class CardGameRunner : MonoBehaviour {
 		Global.me.backgroundMusic.Play ();
 		DisplayEndOfGame ();
 		Global.me.hand.Clear ();
+	
 
 	}
 
@@ -647,7 +666,7 @@ public class CardGameRunner : MonoBehaviour {
 				Destroy (display.gameObject);
 		}
 
-		battleInfo.SetText ("");
+		//battleInfo.SetText ("");
 	}
 
 

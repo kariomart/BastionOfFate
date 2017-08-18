@@ -70,6 +70,7 @@ public class ChestController : MonoBehaviour {
 		if (chestOpen && abilityChosen) {
 
 			if (sprite.sprite != rubble) {
+				Global.me.notifying = false;
 				poof.Play();
 				anim.Stop ();
 				sprite.sprite = rubble;
@@ -84,12 +85,13 @@ public class ChestController : MonoBehaviour {
 			inventory.Add (loot);
 
 			n = Instantiate (notification, new Vector3 (player.transform.position.x, player.transform.position.y, 10), Quaternion.identity);
+			Global.me.notifying = true;
 			GameObject nc = n.transform.GetChild (2).gameObject;
 			TextMesh nct = nc.GetComponent<TextMesh> ();
 			string a1 = abilityStrings [0];
 			string a2 = abilityStrings [1];
 			string a3 = abilityStrings [2];
-			nct.text = ("You've obtained " + loot.name + "!" + "\n\nWhat ability do you want? These are the options:\n1. " + a1 + "\n2. " + a2 + "\n3. " + a3);
+			nct.text = ("You've obtained " + loot.name + "!" + "\nWhat ability do you want? Press 1, 2, or 3. \n\n1. " + a1 + "\n2. " + a2 + "\n3. " + a3);
 
 //			Debug.Log (SoundController.me);
 			SoundController.me.PlaySound (chestOpenSound, 10f);
